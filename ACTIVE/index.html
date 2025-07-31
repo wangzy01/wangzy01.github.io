@@ -1,0 +1,1023 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Recognizing Actions from Robotic View for Natural Human-Robot Interaction">
+  <meta name="keywords" content="diffusion, nerf">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recognizing Actions from Robotic View for Natural Human-Robot Interaction</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTNP10E5TM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-XTNP10E5TM');
+  </script>
+
+  <style>
+   .video-margin {
+      margin-bottom: 10px; 
+    }
+  </style>
+
+<style>
+  .video-container {
+    text-align: center;
+    margin-bottom: -50px; /* Reduce overall bottom spacing */
+  }
+
+  .video-container-pc {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .video-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .video-margin {
+    margin-bottom: 10px; 
+  }
+
+  .reduce-space {
+    margin-bottom: -100px;  
+  }
+
+  .video-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px; /* Further reduce space between rows */
+  }
+  .video-row-pc {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5px; /* Space between rows */
+  }
+  .video-wrapper {
+    margin-right: 15px;
+    width: 22%; /* Adjusted for four videos per row */
+    text-align: center; /* Align titles and videos */
+  }
+
+  .video-wrapper video {
+    width: 100%; /* Make video scale to the container */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .video-wrapper:last-child {
+    margin-right: 0;
+  }
+
+  .individual-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  /* Stylish "Show More" button (smaller, red color scheme) */
+  .show-more-btn {
+    background: linear-gradient(135deg, #ff6b6b 0%, #c0392b 100%);
+    color: #ffffff;
+    padding: 0.45rem 1.1rem;
+    font-size: 0.92rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(255, 76, 76, 0.15);
+    display: inline-flex;
+    align-items: center;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  .show-more-btn .icon {
+    margin-right: 0.4rem;
+  }
+
+  .show-more-btn:hover {
+    transform: translateY(-1.5px) scale(1.04);
+    box-shadow: 0 6px 16px rgba(255, 76, 76, 0.22);
+    background: linear-gradient(135deg, #ff4c4c 0%, #a93226 100%);
+  }
+
+  .show-more-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #ffb3b3;
+  }
+</style>
+
+<style>
+.publication-authors a {
+  color: #0066cc !important;
+  text-decoration: underline;
+}
+</style>
+<style>
+  /* Adjust font sizes for authors and affiliations */
+  .publication-authors {
+    font-size: 1.0rem; /* Author names */
+  }
+
+  .publication-affiliations {
+    font-size: 1.0rem; /* School names */
+  }
+
+  /* Author link default color and underline */
+  .publication-authors a {
+    color: #0066cc;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  /* Hover effect: deepen underline */
+  .publication-authors a:hover {
+    text-decoration-thickness: 3px;
+  }
+</style>
+</head>
+<body>
+
+
+<section class="hero">
+
+
+
+  <div class="reduce-space">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-2 publication-title">
+            <div style="text-align: center; margin-bottom: 15px;margin-top: 20px;">
+              <span style="color: #ff4c4c; font-weight: 900; text-shadow: 2px 2px 8px #ffd6d6, 0 0 2px #fff;">ACTIVE</span>
+            </div>
+              <span class='main-title'>
+                Recognizing <span style="color: #ff4c4c;">Acti</span>ons from Robotic <span style="color: #ff4c4c;">V</span>i<span style="color: #ff4c4c;">e</span>w for Natural Human-Robot Interaction
+              </span>
+
+          </h1>
+
+          <div class="is-size-4 publication-authors">
+            <span class="author-block"><strong>✨ICCV 2025✨</strong></span>
+            <br>
+        </div>
+  
+            <!-- Author Information Section -->
+          <div class="publication-authors" style="margin: 15px 0; font-size: 1.1rem;">
+              <div class="author-row" style="margin-bottom: 10px;">
+                <span class="author-block">
+                  <a href="https://wangzy01.github.io">Ziyi Wang</a><sup>1</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://scholar.google.com/citations?user=TFBbgIQAAAAJ">Peiming Li</a><sup>1</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://scholar.google.com/citations?user=WLMUAjsAAAAJ">Hong Liu</a><sup>1</sup>,
+                </span>
+                <span class="author-block">
+                  Zhichao Deng<sup>2</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://scholar.google.com/citations?user=sEeImYgAAAAJ">Can Wang</a><sup>3</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://scholar.google.com/citations?user=Q5Ild8UAAAAJ">Jun Liu</a><sup>4</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://scholar.google.com/citations?user=fJ7seq0AAAAJ">Junsong Yuan</a><sup>5</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://scholar.google.com/citations?user=woX_4AcAAAAJ">Mengyuan Liu</a><sup>#,1</sup>
+                </span>
+              </div>
+             <!-- <div class="author-row" style="margin-bottom: 10px;">
+ 
+             </div> -->
+          </div>
+          
+          <!-- Affiliation Information -->
+          <div class="is-size-6 publication-affiliations" style="margin-bottom: 15px; color: #666;">
+            <div class="affiliation-row" style="margin-bottom: 5px;">
+              <span class="affiliation-block"><sup>1</sup> PKU,</span>
+              <span class="affiliation-block"><sup>2</sup> SYSU,</span>
+              <span class="affiliation-block"><sup>3</sup> CAU Kiel,</span>
+              <span class="affiliation-block"><sup>4</sup> Lancaster University,</span>
+              <span class="affiliation-block"><sup>5</sup> University at Buffalo</span>
+            </div>
+          </div>
+          
+
+        
+        
+        <div style="height: 10px;"></div>
+        <span class="link-block">
+          <a href="https://arxiv.org/abs/2507.22522"
+             class="external-link button is-normal is-rounded is-dark" target="_blank">
+            <span class="icon">
+              <i class="ai ai-arxiv"></i>
+            </span>
+            <span>arXiv</span>
+          </a>
+        </span>
+          
+        <span class="link-block">
+          <a href="https://github.com/wangzy01/ACTIVE-Action-from-Robotic-View"
+             class="external-link button is-normal is-rounded is-dark">
+            <span class="icon">
+              <i class="fab fa-github"></i>
+            </span>
+            <span>Code</span>
+          </a>
+        </span>
+
+        <span class="link-block">
+          <a href="https://huggingface.co/datasets/ACTIVE2750/"
+             class="external-link button is-normal is-rounded is-dark">
+             <span class="icon">
+              <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="Hugging Face" style="height:1.2em;vertical-align:middle;">
+            </span>
+            <span>Dataset</span>
+          </a>
+        </span>
+
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+<!-- Challenges Section -->
+
+
+<div class="row" style="margin-top: 60pt; margin-bottom: -20pt;">
+  <h2 class="title is-3 has-text-centered">Overview</h2>
+</div>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-vcentered">
+        <div class="column is-5">
+          <p class="content has-text-justified">
+            <span class="dnerf has-text-weight-bold">ACTIVE</span> is a large-scale human behavior understanding dataset designed for natural human-robot interaction (<strong>N-HRI</strong>) scenarios, featuring <strong>46,868</strong> video instances with synchronized <strong>RGB</strong> and <strong>LiDAR point cloud</strong> data.
+            It supports both <em>action recognition</em> and <em>human attribute recognition</em> tasks, providing a comprehensive benchmark for long-range, dynamic perception.
+          </p>
+        </div>
+        <div class="column is-7 has-text-centered">
+          <img src="videos/ACTIVE/fig1.png" alt="Dataset overview" style="width:100%; max-width:100%; height:auto; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.15);">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<div class="row" style="margin-bottom: -20pt;">
+  <h2 class="title is-3 has-text-centered">Challenges</h2>
+</div>
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-vcentered">
+        <div class="column is-5">
+          <p class="content has-text-justified">
+            In contrast to NTU RGB+D (left), challenges visible for ACTIVE include: <strong>(1)</strong> Distance Variation (3-50m), <strong>(2)</strong> Minor Actions (e.g., looking left), <strong>(3)</strong> Composite Actions (with simultaneous human motion), and <strong>(4)</strong> Robot Motion. The images on the right show point cloud accumulation for stationary vs. moving robots (multi-frame overlay), illustrating the challenge of Robot Motion.
+          </p>
+        </div>
+        <div class="column is-7 has-text-centered">
+          <img src="videos/ACTIVE/Challenges.png" alt="Challenges illustration" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<div class="row" style="margin-bottom: -20pt;">
+  <h2 class="title is-3 has-text-centered">Action Categories of ACTIVE</h2>
+</div>
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <table class="table is-bordered is-striped is-fullwidth has-text-centered">
+        <tbody>
+          <tr>
+            <td>1. Walking</td>
+            <td>2. Raising Arms</td>
+            <td>3. Waving</td>
+            <td>4. Grasping</td>
+            <td>5. Touching</td>
+          </tr>
+          <tr>
+            <td>6. Turning Clockwise</td>
+            <td>7. Turning Counterclockwise</td>
+            <td>8. Calling Over</td>
+            <td>9. Shooing Away</td>
+            <td>10. Leftward</td>
+          </tr>
+          <tr>
+            <td>11. Rightward</td>
+            <td>12. Pointing Up</td>
+            <td>13. Pointing Down</td>
+            <td>14. Clapping</td>
+            <td>15. Rubbing Hands</td>
+          </tr>
+          <tr>
+            <td>16. Thumbs Up</td>
+            <td>17. Nodding</td>
+            <td>18. Thumbs Down</td>
+            <td>19. Shaking Head</td>
+            <td>20. Looking Left</td>
+          </tr>
+          <tr>
+            <td>21. Looking Right</td>
+            <td>22. Scratching Head</td>
+            <td>23. Touching Chin</td>
+            <td>24. Arms Crossed</td>
+            <td>25. Hands on Waist</td>
+          </tr>
+          <tr>
+            <td>26. Stretching</td>
+            <td>27. Shrugging Shoulders</td>
+            <td>28. Drinking</td>
+            <td>29. Phone Call</td>
+            <td>30. Texting</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="row">
+  <h2 class="title is-3 has-text-centered">More examples of ACTIVE</h2>        
+</div>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <div class="video-container">
+            <div class="video-row">
+  
+              <div class="video-wrapper">
+                <p class="individual-title" style="font-size: 1.2rem;">Arms Crossed</p>
+                <video controls>
+                  <source src="videos/all/Arms_Crossed_re/Arms_Crossed.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+              <div class="video-wrapper">
+                <p class="individual-title" style="font-size: 1.2rem;">Calling Over</p>
+                <video controls>
+                  <source src="videos/all/Calling_Over_re/Calling_Over.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+              <div class="video-wrapper">
+                <p class="individual-title" style="font-size: 1.2rem;">Turning Clockwise</p>
+                <video controls>
+                  <source src="videos/all/Clockwise_re/Clockwise.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+              <div class="video-wrapper">
+                <p class="individual-title" style="font-size: 1.2rem;">Drinking</p>
+                <video controls>
+                  <source src="videos/all/Drinking_re/Drinking.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </div>
+
+            
+
+            <div class="video-row">
+              <div class="video-wrapper">
+                <video controls>
+                  <source src="videos/all/Arms_Crossed_rgb.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+              <div class="video-wrapper">
+                <video controls>
+                  <source src="videos/all/Calling_Over_rgb.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+              <div class="video-wrapper">
+                <video controls>
+                  <source src="videos/all/Clockwise_rgb.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+              <div class="video-wrapper">
+                <video controls>
+                  <source src="videos/all/Drinking_rgb.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </div>
+          </div>
+          <!-- End of Video Section -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="more-examples-container">
+  <section class="hero extra-video-section">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <!-- First Video Section -->
+            <div class="video-container">
+              <!-- First Row of Videos (Arms Crossed.mp4) -->
+              <div class="video-row">
+                <div class="video-wrapper">
+                  <p class="individual-title" style="font-size: 1.2rem;">Leftward</p>
+                  <video controls>
+                    <source src="videos/all/Leftward_re/Leftward.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <p class="individual-title" style="font-size: 1.2rem;">Nodding</p>
+                  <video controls>
+                    <source src="videos/all/Nodding_re/Nodding.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <p class="individual-title" style="font-size: 1.2rem;">Phone Call</p>
+                  <video controls>
+                    <source src="videos/all/Phone_Call_re/Phone_Call.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <p class="individual-title" style="font-size: 1.2rem;">Grasping</p>
+                  <video controls>
+                    <source src="videos/all/Grasping_re/Grasping.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              </div>
+
+              <!-- Second Row of Videos (Arms Crossed_rgb.mp4) -->
+              <div class="video-row">
+                <div class="video-wrapper">
+                  <video controls>
+                    <source src="videos/all/Leftward_rgb.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <video controls>
+                    <source src="videos/all/Nodding_rgb.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <video controls>
+                    <source src="videos/all/Phone_Call_rgb.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <video controls>
+                    <source src="videos/all/Grasping_rgb.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="hero extra-video-section">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <!-- First Video Section -->
+            <div class="video-container">
+              <!-- First Row of Videos (Arms Crossed.mp4) -->
+              <div class="video-row">
+                <div class="video-wrapper">
+                  <p class="individual-title" style="font-size: 1.2rem;">Pointing Down</p>
+                  <video controls>
+                    <source src="videos/all/Pointing_Down_re/Pointing_Down.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <p class="individual-title" style="font-size: 1.2rem;">Pointing Up</p>
+                  <video controls>
+                    <source src="videos/all/Pointing_Up_re/Pointing_Up.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <p class="individual-title" style="font-size: 1.2rem;">Raising Arms</p>
+                  <video controls>
+                    <source src="videos/all/Raising_Arms_re/Raising_Arms.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <p class="individual-title" style="font-size: 1.2rem;">Hands on Waist</p>
+                  <video controls>
+                    <source src="videos/all/Hands_on_Waist_re/Hands_on_Waist.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              </div>
+
+              <!-- Second Row of Videos (Arms Crossed_rgb.mp4) -->
+              <div class="video-row">
+                <div class="video-wrapper">
+                  <video controls>
+                    <source src="videos/all/Pointing_Down_rgb.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <video controls>
+                    <source src="videos/all/Pointing_Up_rgb.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <video controls>
+                    <source src="videos/all/Raising_Arms_rgb.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <video controls>
+                    <source src="videos/all/Hands_on_Waist_rgb.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              </div>
+            </div>
+            <!-- End of Video Section -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="hero extra-video-section">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <div class="video-container">
+              <div class="video-row">
+                <div class="video-wrapper">
+                  <p class="individual-title" style="font-size: 1.2rem;">Shrugging Shoulders</p>
+                  <video controls>
+                    <source src="videos/all/Shrugging_Shoulders_re/Shrugging_Shoulders.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <p class="individual-title" style="font-size: 1.2rem;">Stretching</p>
+                  <video controls>
+                    <source src="videos/all/Stretching_re/Stretching.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <p class="individual-title" style="font-size: 1.2rem;">Texting</p>
+                  <video controls>
+                    <source src="videos/all/Texting_re/Texting.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <p class="individual-title" style="font-size: 1.2rem;">Rightward</p>
+                  <video controls>
+                    <source src="videos/all/Rightward_re/Rightward.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              </div>
+
+              <!-- Second Row of Videos (Arms Crossed_rgb.mp4) -->
+              <div class="video-row">
+                <div class="video-wrapper">
+                  <video controls>
+                    <source src="videos/all/Shrugging_Shoulders_rgb.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <video controls>
+                    <source src="videos/all/Stretching_rgb.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <video controls>
+                    <source src="videos/all/Texting_rgb.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <video controls>
+                    <source src="videos/all/Rightward_rgb.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              </div>
+            </div>
+            <!-- End of Video Section -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="hero extra-video-section">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <!-- First Video Section -->
+            <div class="video-container">
+              <!-- First Row of Videos (Arms Crossed.mp4) -->
+              <div class="video-row">
+                <div class="video-wrapper">
+                  <p class="individual-title" style="font-size: 1.2rem;">Thumbs Down</p>
+                  <video controls>
+                    <source src="videos/all/Thumbs_Down_re/Thumbs_Down.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <p class="individual-title" style="font-size: 1.2rem;">Thumbs Up</p>
+                  <video controls>
+                    <source src="videos/all/Thumbs_Up_re/Thumbs_Up.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <p class="individual-title" style="font-size: 1.2rem;">Touching Chin</p>
+                  <video controls>
+                    <source src="videos/all/Touching_Chin_re/Touching_Chin.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <p class="individual-title" style="font-size: 1.2rem;">Scratching Head</p>
+                  <video controls>
+                    <source src="videos/all/Scratching_Head_re/Scratching_Head.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              </div>
+
+              <!-- Second Row of Videos (Arms Crossed_rgb.mp4) -->
+              <div class="video-row">
+                <div class="video-wrapper">
+                  <video controls>
+                    <source src="videos/all/Thumbs_Down_rgb.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <video controls>
+                    <source src="videos/all/Thumbs_Up_rgb.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <video controls>
+                    <source src="videos/all/Touching_Chin_rgb.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <video controls>
+                    <source src="videos/all/Scratching_Head_rgb.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              </div>
+            </div>
+            <!-- End of Video Section -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="hero extra-video-section">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <!-- First Video Section -->
+            <div class="video-container">
+              <!-- First Row of Videos (Arms Crossed.mp4) -->
+              <div class="video-row">
+                <div class="video-wrapper">
+                  <p class="individual-title" style="font-size: 1.2rem;">Touching</p>
+                  <video controls>
+                    <source src="videos/all/Touching_Chin_re/Touching_Chin.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <p class="individual-title" style="font-size: 1.0rem;">Turning Counterclockwise</p>
+                  <video controls>
+                    <source src="videos/all/Turning_Counterclockwise_re/Turning_Counterclockwise.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <p class="individual-title" style="font-size: 1.2rem;">Waving</p>
+                  <video controls>
+                    <source src="videos/all/Waving_re/Waving.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <p class="individual-title" style="font-size: 1.2rem;">Shooing Away</p>
+                  <video controls>
+                    <source src="videos/all/Shooing_Away_re/Shooing_Away.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              </div>
+
+              <!-- Second Row of Videos (Arms Crossed_rgb.mp4) -->
+              <div class="video-row">
+                <div class="video-wrapper">
+                  <video controls>
+                    <source src="videos/all/Touching_rgb.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <video controls>
+                    <source src="videos/all/Turning_Counterclockwise_rgb.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <video controls>
+                    <source src="videos/all/Waving_rgb.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div class="video-wrapper">
+                  <video controls>
+                    <source src="videos/all/Shooing_Away_rgb.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              </div>
+            </div>
+            <!-- End of Video Section -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="has-text-centered" style="margin-top: 20px; margin-bottom: 20px;">
+  <button id="show-more-btn" class="show-more-btn">
+    <span class="icon">
+      <i class="fas fa-plus"></i>
+    </span>
+    <span>Show More Examples</span>
+  </button>
+</div>
+
+
+<div class="row" style="margin-top: 20pt;">
+  <h2 class="title is-3 has-text-centered">​​The Impact of Robotic Movement on Point Cloud Video​​</h2>        
+</div>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="video-module">
+        <!-- 第一行 -->
+        <div class="video-row-pc">
+          <div class="video-wrapper">
+            <p class="individual-title" style="font-size: 1.2rem;">Looking Right</p>
+            <video controls loop autoplay muted>
+              <source src="videos/ACTIVE/new/Looking_Right.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div class="video-wrapper">
+            <p class="individual-title" style="font-size: 1.2rem;">Thumbs Down</p>
+            <video controls loop autoplay muted>
+              <source src="videos/ACTIVE/new/Thumbs_Down.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div class="video-wrapper">
+            <p class="individual-title" style="font-size: 1.2rem;">Touching Chin</p>
+            <video controls loop autoplay muted>
+              <source src="videos/ACTIVE/new/Touching_Chin.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+
+        <!-- 第三行 -->
+        <div class="video-row-pc">
+          <div class="video-wrapper">
+            <p class="individual-title" style="font-size: 1.2rem;">Touching</p>
+            <video controls loop autoplay muted>
+              <source src="videos/ACTIVE/new/Touching.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div class="video-wrapper">
+            <p class="individual-title" style="font-size: 1.2rem;">Turning Clockwise</p>
+            <video controls loop autoplay muted>
+              <source src="videos/ACTIVE/new/Turning_Clockwise.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div class="video-wrapper">
+            <p class="individual-title" style="font-size: 1.2rem;">Waving</p>
+            <video controls loop autoplay muted>
+              <source src="videos/ACTIVE/new/Waving.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+        <!-- 第二行 -->
+        <div class="video-row-pc">
+          <div class="video-wrapper">
+            <p class="individual-title" style="font-size: 1.2rem;">Clapping</p>
+            <video controls loop autoplay muted>
+              <source src="videos/ACTIVE/new/Clapping.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div class="video-wrapper">
+            <p class="individual-title" style="font-size: 1.2rem;">Grasping</p>
+            <video controls loop autoplay muted>
+              <source src="videos/ACTIVE/new/Grasping.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div class="video-wrapper">
+            <p class="individual-title" style="font-size: 1.2rem;">Phone Call</p>
+            <video controls loop autoplay muted>
+              <source src="videos/ACTIVE/new/Phone_Call.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <div class="box has-background-light" style="padding: 2rem;">
+            <h2 class="title is-3 has-text-centered">Abstract</h2>
+            <div class="content has-text-justified">
+              <p>
+                Natural Human-Robot Interaction (N-HRI) requires robots to recognize human actions at various distances and states, while the robot itself may be in motion or stationary. This setup is more flexible and practical than traditional human action recognition tasks. However, existing benchmarks are designed for conventional human action recognition and fail to address the complexities of understanding human action in N-HRI, given the limited data, data modalities, task categories, and diversity in subjects and environments. To understand human behavior in N-HRI, we introduce <strong>ACTIVE</strong> (Action in Robotic View), a large-scale human action dataset for N-HRI. ACTIVE includes <strong>30</strong> composite action categories with labels, <strong>80</strong> participants, and <strong>46,868</strong> video instances, covering both point cloud and RGB modalities. During data capture, participants perform various human actions in diverse environments at different distances (from <strong>3&nbsp;m</strong> to <strong>50&nbsp;m</strong>), with the camera platform also in motion to simulate varying robot states. This comprehensive and challenging benchmark aims to advance research on human action understanding in N-HRI, such as action recognition and attribute recognition. For recognizing actions in robotic view, we propose <strong>ACTIVE-PC</strong>, which achieves accurate perception of human actions at long distances through Multilevel Neighborhood Sampling, Layered Recognizers and Elastic Ellipse Query, along with precise decoupling of kinematic interference and human actions. Experiments demonstrate the effectiveness of this method on the ACTIVE dataset.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Feature Visualization Section -->
+<div class="row" style="margin-top: 20pt;">
+  <h2 class="title is-3 has-text-centered">Feature Visualization</h2>
+</div>
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="has-text-centered">
+        <p><img src="videos/ACTIVE/pointcloud.png" style="width:80%; max-width:100%; height:auto;" alt="Feature visualization"></p>
+      </div>
+      <h2 class="subtitle has-text-centered">
+        Visualization of PST-Transformer (left) and ACTIVE-PC (right) output features. <br>
+        Brighter color indicates higher activation.
+      </h2>
+    </div>
+  </div>
+</section>
+
+<div style="height: 10px;"></div>
+
+<div class="row">
+  <h2 class="title is-3 has-text-centered">Samples for attribute recognition</h2>        
+</div>
+<div style="height: 20px;"></div>
+<div class="row has-text-centered">
+  <img src="videos/ACTIVE/attribute.png" alt="Sample image" style="max-width: 20%; height: auto; display: block; margin-left: auto; margin-right: auto;">
+</div>
+
+<!-- <br><br> -->
+
+
+<nav class="navbar is-white" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+</nav>
+
+
+<footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content has-text-centered">
+            <p>
+              Website source based on <a href="https://github.com/nerfies/nerfies.github.io">this source code</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const container = document.getElementById('more-examples-container');
+      const showMoreBtn = document.getElementById('show-more-btn');
+
+      if (container && showMoreBtn) {
+          const sections = Array.from(container.querySelectorAll('.extra-video-section'));
+          
+          sections.forEach(section => {
+              section.style.display = 'none';
+          });
+
+          let sectionsToShow = sections.slice();
+
+          if (sectionsToShow.length === 0) {
+              showMoreBtn.style.display = 'none';
+          } else {
+            showMoreBtn.addEventListener('click', function () {
+              const section = sectionsToShow.shift();
+              if (section) {
+                  section.style.display = 'block';
+              }
+
+              if (sectionsToShow.length === 0) {
+                  showMoreBtn.style.display = 'none';
+              }
+            });
+          }
+      }
+    });
+  </script>
+
+</body>
+</html>
