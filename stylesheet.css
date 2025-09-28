@@ -133,3 +133,107 @@ h2 {
 span.highlight {
   background-color: #ffffd0;
 }
+
+.honors-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.honor-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px dashed #e6e6e6;
+}
+
+.honor-item:last-child {
+  border-bottom: none;
+}
+
+.honor-title {
+  display: inline-block;
+}
+
+.honor-year {
+  color: #666;
+  white-space: nowrap;
+  min-width: 48px;
+  text-align: right;
+}
+
+/* Light theme variables and small enhancements */
+:root {
+  --bg: #ffffff;
+  --text: #1a1a1a;
+  --muted: #666666;
+  --primary: #1772d0; /* keep existing link color as primary */
+  --card-bg: #ffffff;
+  --card-border: #e6e6e6;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.04), 0 4px 12px rgba(0,0,0,.06);
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Typography tweaks */
+body,
+p {
+  line-height: 1.65;
+}
+
+h2 {
+  letter-spacing: 0.2px;
+}
+
+.name {
+  letter-spacing: .2px;
+}
+
+/* Publication thumbnails */
+img[width="210"][height="140"] {
+  border-radius: 10px;
+  background: #fafafa;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Profile image subtle elevation */
+img[alt~="profile"][alt~="photo"] {
+  box-shadow: 0 6px 18px rgba(0,0,0,.12);
+}
+
+/* Honors list visual polish */
+.honors-list {
+  margin-top: 6px;
+}
+
+.honor-item {
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--card-border);
+}
+
+.honor-item:last-child {
+  border-bottom: none;
+}
+
+.honor-year {
+  color: var(--muted);
+}
+
+/* Paper title emphasis */
+.papertitle {
+  font-size: 16px;
+}
+
+/* Link transitions */
+a {
+  transition: color .15s ease;
+}
+
+a:hover {
+  text-decoration: underline;
+}
