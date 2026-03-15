@@ -224,6 +224,29 @@ img[alt~="profile"][alt~="photo"] {
   color: var(--muted);
 }
 
+.services-list {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+}
+
+.service-item {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 6px 0;
+}
+
+.service-role {
+  min-width: 132px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.service-detail {
+  color: var(--text);
+}
+
 /* Paper title emphasis */
 .papertitle {
   font-size: 16px;
@@ -236,4 +259,15 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  .service-item {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .service-role {
+    min-width: 0;
+  }
 }
