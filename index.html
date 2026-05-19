@@ -74,6 +74,10 @@
         </div>
         <ol class="news-list">
           <li>
+            <time datetime="2026-05">[2026-05]</time>
+            <p><a href="https://github.com/wangzy01/MSPNet" target="_blank" rel="noopener noreferrer">MSPNet</a> is accepted by <em>IEEE Transactions on Image Processing (TIP)</em>.</p>
+          </li>
+          <li>
             <time datetime="2026-04">[2026-04]</time>
             <p><a href="https://arxiv.org/abs/2603.18003" target="_blank" rel="noopener noreferrer">SkeletonLLM</a> is accepted by <em>ICML 2026</em>.</p>
           </li>
@@ -103,15 +107,24 @@
             <h2>Publications</h2>
             <p class="note">* indicates equal contribution, # indicates corresponding author.</p>
           </div>
-          <div class="legend" aria-label="Research direction legend">
-            <span class="tag llm"><span>♠</span> Multimodal Large Language Models</span>
-            <span class="tag motion"><span>♥</span> Human Motion Perception and Generation</span>
-            <span class="tag embodied"><span>♦</span> Embodied AI</span>
+          <div class="publication-aside">
+            <div class="publication-filters" role="group" aria-label="Filter publications by topic">
+              <span class="filter-label">Select topic:</span>
+              <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">All</button>
+              <button class="filter-button" type="button" data-filter="llm" aria-pressed="false">MLLMs</button>
+              <button class="filter-button" type="button" data-filter="motion" aria-pressed="false">Motion</button>
+              <button class="filter-button" type="button" data-filter="embodied" aria-pressed="false">Embodied AI</button>
+            </div>
+            <div class="legend" aria-label="Research direction legend">
+              <span class="tag llm"><span>♠</span> Multimodal Large Language Models</span>
+              <span class="tag motion"><span>♥</span> Human Motion Perception and Generation</span>
+              <span class="tag embodied"><span>♦</span> Embodied AI</span>
+            </div>
           </div>
         </div>
 
         <div class="paper-list">
-          <article class="paper">
+          <article class="paper" data-topics="llm motion">
             <a class="paper-visual" href="https://arxiv.org/abs/2603.18003" target="_blank" rel="noopener noreferrer" aria-label="SkeletonLLM paper">
               <img src="images/skeletonllm2.png" alt="SkeletonLLM overview" loading="lazy" decoding="async">
             </a>
@@ -137,7 +150,7 @@
             </div>
           </article>
 
-          <article class="paper">
+          <article class="paper" data-topics="motion llm">
             <a class="paper-visual" href="https://arxiv.org/abs/2603.22282" target="_blank" rel="noopener noreferrer" aria-label="UniMotion paper">
               <img src="images/unimotion.png" alt="UniMotion project overview" loading="lazy" decoding="async">
             </a>
@@ -163,7 +176,7 @@
             </div>
           </article>
 
-          <article class="paper">
+          <article class="paper" data-topics="motion llm">
             <a class="paper-visual" href="https://arxiv.org/pdf/2602.02401" target="_blank" rel="noopener noreferrer" aria-label="Superman paper">
               <img src="images/superman.png" alt="Superman project overview" loading="lazy" decoding="async">
             </a>
@@ -191,7 +204,7 @@
             </div>
           </article>
 
-          <article class="paper">
+          <article class="paper" data-topics="embodied">
             <a class="paper-visual" href="https://arxiv.org/abs/2507.10543" target="_blank" rel="noopener noreferrer" aria-label="MP1 paper">
               <img src="images/mp1.png" alt="MP1 overview" loading="lazy" decoding="async">
             </a>
@@ -215,16 +228,17 @@
             </div>
           </article>
 
-          <article class="paper">
+          <article class="paper" data-topics="motion">
             <div class="paper-visual" aria-label="Physical privacy-preserving action recognition benchmark">
               <img src="images/tip.png" alt="Physical privacy-preserving action recognition benchmark" loading="lazy" decoding="async">
             </div>
             <div class="paper-body">
-              <div class="paper-meta"><span class="venue-badge review">Under Review</span></div>
-              <h3>Benchmarking Physical Privacy-Preserving Action Recognition: An Embarrassingly Simple Device, Dataset, and Method</h3>
+              <div class="paper-meta">
+                <span class="venue-badge accepted">IEEE TIP</span>
+              </div>
+              <h3>Lens Privacy Sealing: A New Benchmark and Method for Physical Privacy-Preserving Action Recognition</h3>
               <div class="paper-tags">
                 <span class="tag motion"><span>♥</span> Motion</span>
-                <span class="tag embodied"><span>♦</span> Embodied AI</span>
               </div>
               <p class="authors">
                 <a href="https://scholar.google.com/citations?user=woX_4AcAAAAJ" target="_blank" rel="noopener noreferrer">Mengyuan Liu</a>,
@@ -232,11 +246,15 @@
                 <a href="https://scholar.google.com/citations?user=TFBbgIQAAAAJ" target="_blank" rel="noopener noreferrer">Peiming Li#</a>,
                 <a href="https://scholar.google.com/citations?user=fJ7seq0AAAAJ" target="_blank" rel="noopener noreferrer">Junsong Yuan</a>
               </p>
-              <p class="venue">Under Review</p>
+              <p class="venue">IEEE Transactions on Image Processing (TIP)</p>
+              <div class="paper-links">
+                <a href="https://github.com/wangzy01/MSPNet" target="_blank" rel="noopener noreferrer">Code</a>
+                <a href="https://github.com/wangzy01/P3AR-NTU" target="_blank" rel="noopener noreferrer">Dataset</a>
+              </div>
             </div>
           </article>
 
-          <article class="paper">
+          <article class="paper" data-topics="motion embodied">
             <a class="paper-visual" href="https://arxiv.org/abs/2507.22522" target="_blank" rel="noopener noreferrer" aria-label="ACTIVE paper">
               <img src="images/active.png" alt="ACTIVE project overview" loading="lazy" decoding="async">
             </a>
@@ -266,7 +284,7 @@
             </div>
           </article>
 
-          <article class="paper">
+          <article class="paper" data-topics="motion">
             <a class="paper-visual" href="https://arxiv.org/abs/2508.14604" target="_blank" rel="noopener noreferrer" aria-label="UST-SSM paper">
               <img src="images/ustssm.png" alt="UST-SSM overview" loading="lazy" decoding="async">
             </a>
@@ -293,14 +311,14 @@
             </div>
           </article>
 
-          <article class="paper">
+          <article class="paper" data-topics="embodied">
             <a class="paper-visual" href="https://arxiv.org/abs/2407.19370" target="_blank" rel="noopener noreferrer" aria-label="ClickDiff paper">
               <img src="images/clickdiff.png" alt="ClickDiff overview" loading="lazy" decoding="async">
             </a>
             <div class="paper-body">
               <div class="paper-meta">
                 <span class="venue-badge accepted">ACM MM 2024</span>
-                <span class="venue-badge oral">Oral</span>
+                <span class="venue-badge oral">🎤 Oral</span>
               </div>
               <h3><a href="https://arxiv.org/abs/2407.19370" target="_blank" rel="noopener noreferrer">ClickDiff: Click to Induce Semantic Contact Map for Controllable Grasp Generation with Diffusion Models</a></h3>
               <div class="paper-tags">
@@ -368,5 +386,28 @@
     <footer class="footer">
       <p>© Ziyi Wang</p>
     </footer>
+    <script>
+      (() => {
+        const filterButtons = Array.from(document.querySelectorAll(".filter-button"));
+        const papers = Array.from(document.querySelectorAll(".paper-list .paper"));
+
+        filterButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            const filter = button.dataset.filter;
+
+            filterButtons.forEach((item) => {
+              const active = item === button;
+              item.classList.toggle("is-active", active);
+              item.setAttribute("aria-pressed", String(active));
+            });
+
+            papers.forEach((paper) => {
+              const topics = (paper.dataset.topics || "").split(/\s+/);
+              paper.hidden = filter !== "all" && !topics.includes(filter);
+            });
+          });
+        });
+      })();
+    </script>
   </body>
 </html>
