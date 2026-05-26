@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkeletonLLM Visualization Gallery</title>
+    <meta name="description" content="Visualization gallery for SkeletonLLM: Universal Skeleton Understanding via Differentiable Rendering and MLLMs.">
+    <style>
+      :root {
+        --ink: #172033;
+        --muted: #5b6475;
+        --line: #dbe1ea;
+        --paper: #ffffff;
+        --wash: #f5f7fb;
+        --accent: #d64f2f;
+        --accent-soft: #fff1ec;
+        --blue: #2166b1;
+        --green: #138a63;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: var(--wash);
+        font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        line-height: 1.6;
+      }
+
+      a {
+        color: var(--blue);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .container {
+        width: min(1120px, calc(100% - 40px));
+        margin: 0 auto;
+      }
+
+      header {
+        background: var(--paper);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 24px;
+        padding: 48px 0 34px;
+      }
+
+      .kicker {
+        margin: 0 0 8px;
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 930px;
+        margin: 0;
+        font-size: 38px;
+        line-height: 1.12;
+        font-weight: 800;
+      }
+
+      .intro {
+        max-width: 860px;
+        margin: 14px 0 0;
+        color: var(--muted);
+        font-size: 17px;
+      }
+
+      .links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .links a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 36px;
+        padding: 7px 12px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--paper);
+        color: var(--ink);
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      main {
+        padding: 34px 0 48px;
+      }
+
+      section {
+        margin-top: 34px;
+      }
+
+      section:first-child {
+        margin-top: 0;
+      }
+
+      .section-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 18px;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 24px;
+        line-height: 1.25;
+      }
+
+      .section-note {
+        max-width: 640px;
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      .figure-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+        gap: 18px;
+      }
+
+      .figure-panel,
+      .gallery-item {
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--paper);
+      }
+
+      .figure-panel img {
+        display: block;
+        width: 100%;
+        height: auto;
+        background: #ffffff;
+      }
+
+      .figure-panel figcaption {
+        padding: 12px 14px 14px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .gallery-item img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        object-fit: contain;
+        background: #171827;
+      }
+
+      .gallery-copy {
+        padding: 14px;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        min-height: 24px;
+        padding: 2px 8px;
+        border-radius: 6px;
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      h3 {
+        margin: 9px 0 6px;
+        font-size: 17px;
+        line-height: 1.3;
+      }
+
+      .gallery-copy p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      footer {
+        border-top: 1px solid var(--line);
+        background: var(--paper);
+        color: var(--muted);
+        font-size: 14px;
+        padding: 22px 0;
+      }
+
+      @media (max-width: 900px) {
+        h1 {
+          font-size: 31px;
+        }
+
+        .figure-grid,
+        .gallery {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .figure-panel:first-child {
+          grid-column: 1 / -1;
+        }
+      }
+
+      @media (max-width: 620px) {
+        .container {
+          width: min(100% - 28px, 1120px);
+        }
+
+        .hero {
+          padding: 34px 0 28px;
+        }
+
+        h1 {
+          font-size: 26px;
+        }
+
+        .intro {
+          font-size: 15px;
+        }
+
+        .section-head {
+          display: block;
+        }
+
+        .figure-grid,
+        .gallery {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container hero">
+        <div>
+          <p class="kicker">SkeletonLLM Visualization Gallery</p>
+          <h1>Universal Skeleton Understanding via Differentiable Rendering and MLLMs</h1>
+          <p class="intro">
+            This page collects qualitative DrAction renderings prepared for the ICML 2026 paper. It focuses on visual samples only; the official code repository contains release status and paper information.
+          </p>
+          <div class="links" aria-label="Related links">
+            <a href="https://arxiv.org/abs/2603.18003" target="_blank" rel="noopener noreferrer">Paper</a>
+            <a href="https://github.com/wangzy01/SkeletonLLM" target="_blank" rel="noopener noreferrer">Code</a>
+            <a href="../index.html#publications">Homepage</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="container" aria-labelledby="overview-title">
+        <div class="section-head">
+          <div>
+            <h2 id="overview-title">Rendering Overview</h2>
+            <p class="section-note">DrAction converts skeleton sequences into visual tokens that MLLMs can process directly, while preserving motion cues across different skeleton formats.</p>
+          </div>
+        </div>
+        <div class="figure-grid">
+          <figure class="figure-panel">
+            <img src="assets/figs/fig2.png" alt="SkeletonLLM framework overview" loading="eager" decoding="async">
+            <figcaption>SkeletonLLM uses DrAction to render skeleton motion before visual-language reasoning.</figcaption>
+          </figure>
+          <figure class="figure-panel">
+            <img src="assets/figs/fig4.png" alt="Qualitative comparison of rendering methods" loading="lazy" decoding="async">
+            <figcaption>Learned rendering highlights motion-relevant regions more clearly than fixed renderers.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="container" aria-labelledby="gallery-title">
+        <div class="section-head">
+          <div>
+            <h2 id="gallery-title">Rendered Motion Samples</h2>
+            <p class="section-note">Each animation shows a rendered skeleton sequence with its submitted ground-truth motion description.</p>
+          </div>
+        </div>
+        <div class="gallery" id="gallery"></div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">Visualization gallery for SkeletonLLM, ICML 2026.</div>
+    </footer>
+
+    <script>
+      const samples = [
+        {
+          file: "000000.gif",
+          title: "Left Leg Kick",
+          alt: "Rendered left leg kick",
+          text: "A person kicks with the left leg before returning to the original stance."
+        },
+        {
+          file: "000003.gif",
+          title: "Lifting and Placing",
+          alt: "Rendered lifting and placing motion",
+          text: "A person picks up an object from the left side and places it down on the right side."
+        },
+        {
+          file: "000024.gif",
+          title: "Handstand",
+          alt: "Rendered handstand motion",
+          text: "A person places both hands on the floor and performs a handstand."
+        },
+        {
+          file: "000030.gif",
+          title: "Punching Sequence",
+          alt: "Rendered punching sequence",
+          text: "A person performs repeated punching motions with uppercuts and jabs."
+        },
+        {
+          file: "000018.gif",
+          title: "Hip Sway Dance",
+          alt: "Rendered hip sway dance",
+          text: "A person sways from side to side while shifting weight between the legs."
+        },
+        {
+          file: "000039.gif",
+          title: "Walking in Place",
+          alt: "Rendered walking in place",
+          text: "A person walks casually in place with slight arm swings."
+        },
+        {
+          file: "000004.gif",
+          title: "Chicken Imitation",
+          alt: "Rendered chicken imitation",
+          text: "A person bends up and down while flapping the arms like a chicken."
+        },
+        {
+          file: "000008.gif",
+          title: "Squat with Arm Raise",
+          alt: "Rendered squat with arm raise",
+          text: "A person squats, raises both arms above the head, and stands back up."
+        },
+        {
+          file: "000009.gif",
+          title: "Waving Right Hand",
+          alt: "Rendered right hand waving",
+          text: "A person raises the right hand, waves from side to side, and lowers the hand."
+        },
+        {
+          file: "000010.gif",
+          title: "Patting Left Hand",
+          alt: "Rendered patting hand motion",
+          text: "A person raises the left hand and taps the left wrist with the right hand."
+        },
+        {
+          file: "000015.gif",
+          title: "Setting Down Object",
+          alt: "Rendered setting down object motion",
+          text: "A person raises an arm in a drinking-like motion and then bends over."
+        },
+        {
+          file: "000016.gif",
+          title: "Playing Violin",
+          alt: "Rendered violin-playing motion",
+          text: "A person raises one arm and makes a sawing motion as if playing the violin."
+        },
+        {
+          file: "000017.gif",
+          title: "Right Leg Kick",
+          alt: "Rendered right leg kick",
+          text: "A person kicks outward with the right leg."
+        },
+        {
+          file: "000037.gif",
+          title: "Karate Chop and Block",
+          alt: "Rendered karate chop and block",
+          text: "A person chops with one arm while using the other arm to block near the face."
+        },
+        {
+          file: "000071.gif",
+          title: "Dancing and Jogging",
+          alt: "Rendered dancing and jogging",
+          text: "A person moves backward, dances, and shifts into small jogging steps."
+        },
+        {
+          file: "000085.gif",
+          title: "Playing Air Guitar",
+          alt: "Rendered air guitar motion",
+          text: "A person holds an imaginary guitar neck and strums with the other hand."
+        },
+        {
+          file: "000096.gif",
+          title: "Side Stretching",
+          alt: "Rendered side stretching",
+          text: "A person stretches each arm over the head while bending the body sideways."
+        },
+        {
+          file: "000099.gif",
+          title: "Jogging in Place",
+          alt: "Rendered jogging in place",
+          text: "A person jogs on the spot."
+        },
+        {
+          file: "000105.gif",
+          title: "Sashay Dance",
+          alt: "Rendered sashay dance",
+          text: "A person dances back and forth while reaching to alternating sides."
+        },
+        {
+          file: "000120.gif",
+          title: "Ballroom Dancing",
+          alt: "Rendered ballroom dancing",
+          text: "A person performs square-like ballroom dance steps."
+        },
+        {
+          file: "000124.gif",
+          title: "Waving Both Hands",
+          alt: "Rendered waving both hands",
+          text: "A person raises both arms and waves across the body."
+        }
+      ];
+
+      const gallery = document.getElementById("gallery");
+      const fragment = document.createDocumentFragment();
+
+      samples.forEach((sample) => {
+        const article = document.createElement("article");
+        article.className = "gallery-item";
+        article.innerHTML = `
+          <img src="assets/gifs/${sample.file}" alt="${sample.alt}" loading="eager" decoding="async">
+          <div class="gallery-copy">
+            <span class="tag">Ground Truth</span>
+            <h3>${sample.title}</h3>
+            <p>${sample.text}</p>
+          </div>
+        `;
+        fragment.appendChild(article);
+      });
+
+      gallery.appendChild(fragment);
+    </script>
+  </body>
+</html>
