@@ -639,7 +639,6 @@ h1 span {
   min-width: 0;
 }
 
-.service-list,
 .honor-list,
 .competition-list {
   list-style: none;
@@ -648,7 +647,6 @@ h1 span {
   border-top: 1px solid var(--line);
 }
 
-.service-list li,
 .honor-list li,
 .competition-list li {
   display: flex;
@@ -666,7 +664,6 @@ h1 span {
   align-items: baseline;
 }
 
-.service-list span,
 .honor-list time,
 .competition-list time {
   color: var(--muted);
@@ -675,7 +672,6 @@ h1 span {
   text-transform: uppercase;
 }
 
-.service-list strong,
 .honor-list span,
 .competition-list span {
   color: var(--ink);
@@ -689,6 +685,105 @@ h1 span {
 
 .competition-list span {
   max-width: 430px;
+}
+
+.service-groups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.service-group {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, .74);
+}
+
+.service-group::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: var(--teal);
+}
+
+.service-group-conferences::before {
+  background: var(--blue);
+}
+
+.service-group-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.service-group-heading h3 {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.25;
+}
+
+.service-group-heading > span {
+  flex: 0 0 auto;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: var(--surface-soft);
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .05em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.service-venues {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.service-venues li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.service-venues li:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.service-venues li > span {
+  min-width: 0;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 680;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.service-venues abbr,
+.service-venues time {
+  flex: 0 0 auto;
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 820;
+  letter-spacing: .04em;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.service-group-conferences .service-venues time {
+  color: var(--blue);
 }
 
 .honor-list time,
@@ -890,17 +985,23 @@ h1 span {
     font-size: 18px;
   }
 
-  .service-list li,
   .honor-list li,
   .competition-list li {
     display: block;
   }
 
-  .service-list span,
   .honor-list time,
   .competition-list time {
     display: block;
     margin-bottom: 4px;
     text-align: left;
+  }
+
+  .service-groups {
+    grid-template-columns: 1fr;
+  }
+
+  .service-group {
+    padding: 16px;
   }
 }
