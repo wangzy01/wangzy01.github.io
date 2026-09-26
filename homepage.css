@@ -1,15 +1,7 @@
-/* Local content and responsive adjustments to Jon Barron's upstream template. */
+/* Local content styles; keep Jon Barron's native table layout at every width. */
 body {
   background: #ffffff;
   color: #000000;
-  line-height: 1.5;
-  -webkit-text-size-adjust: 100%;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
 }
 
 a:focus-visible {
@@ -141,12 +133,6 @@ a:focus-visible {
   margin: 0;
 }
 
-.paper-body .authors,
-.paper-body .venue,
-.paper-links {
-  margin-top: 3px;
-}
-
 .paper-links a {
   white-space: nowrap;
 }
@@ -185,53 +171,7 @@ a:focus-visible {
 }
 
 @media (max-width: 600px) {
-  .profile-table,
-  .profile-table > tbody,
-  .profile-table > tbody > tr,
-  .paper-list,
-  .paper-list > tbody,
-  .paper-list .paper {
-    display: block;
-  }
-
-  .profile-table .profile-copy,
-  .profile-table .profile-photo,
-  .paper-list .paper-image,
-  .paper-list .paper-body {
-    display: block;
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 16px !important;
-  }
-
-  .profile-table .profile-photo {
-    width: 224px !important;
-    margin: 0 auto;
-    padding-top: 0 !important;
-  }
-
-  .name {
-    font-size: 30px;
-  }
-
-  .name span {
-    font-size: 21px;
-  }
-
-  .paper-list .paper-image {
-    padding-bottom: 10px !important;
-  }
-
-  .paper-list .paper-body {
-    padding-top: 0 !important;
-    padding-bottom: 22px !important;
-  }
-
-  .paper-image img {
-    width: 200px;
-    max-height: 150px;
-  }
-
+  /* Only local lists adapt; profile and publications stay side by side. */
   .news-list li {
     grid-template-columns: 72px minmax(0, 1fr);
     gap: 8px;
