@@ -5,9 +5,9 @@ These previews are derived from the authors' original project demonstrations. Th
 ## SkeletonLLM
 
 - Source gallery: https://wangzy01.github.io/SkeletonLLM/
-- Left: `SkeletonLLM/assets/gifs/000000.gif` (Left Leg Kick).
-- Right: `SkeletonLLM/assets/gifs/000024.gif` (Handstand).
-- The two original animations play side by side at their original speed. Black margins are cropped while retaining the full motion extent. The composite is 320 × 320 pixels, 20 fps, and 6.5 seconds long; the shorter kicking sequence loops.
+- Source animation: `SkeletonLLM/assets/gifs/000024.gif` (Handstand).
+- One uninterrupted animation shows the person standing, bending to place their hands on the floor, performing a handstand, and returning to standing. The original speed and complete 6.5-second sequence are preserved; no other clip is composited or concatenated.
+- Black margins are cropped to a 320 × 320 square at (36, 60), preserving the motion extent across all frames. The preview runs at 20 fps, and its poster is extracted at 3 seconds.
 - Output: `images/skeletonllm-preview.mp4` and `images/skeletonllm-preview.jpg`.
 
 ## MP1
