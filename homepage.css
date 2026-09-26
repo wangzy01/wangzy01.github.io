@@ -1,0 +1,248 @@
+/* Local content and responsive adjustments to Jon Barron's upstream template. */
+body {
+  background: #ffffff;
+  color: #000000;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+a:focus-visible {
+  outline: 2px solid #1772d0;
+  outline-offset: 3px;
+}
+
+.name span {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 22px;
+}
+
+.profile-copy p {
+  margin-block: 14px;
+}
+
+.contact-links a {
+  white-space: nowrap;
+}
+
+.portrait-crop {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.portrait-crop img {
+  /* Head-and-shoulders framing: a 600px square at (0, 330) in the original. */
+  position: absolute;
+  top: -55%;
+  left: 0;
+  width: 241.333333%;
+  max-width: none;
+  height: auto;
+}
+
+.section-table {
+  margin-top: 14px;
+}
+
+.section-table h2 {
+  margin-bottom: 14px;
+}
+
+.news-list,
+.dated-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.news-list li {
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr);
+  gap: 12px;
+}
+
+.news-list li + li,
+.dated-list li + li {
+  margin-top: 7px;
+}
+
+.news-list p {
+  margin: 0;
+}
+
+.news-list time,
+.dated-list time {
+  color: #555555;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.note {
+  margin: 0;
+  color: #000000;
+  font-size: 13px;
+}
+
+.oral-presentation {
+  color: #ff0000;
+}
+
+.paper-image img {
+  display: block;
+  width: 160px;
+  max-width: 100%;
+  max-height: 160px;
+  height: auto;
+  object-fit: contain;
+}
+
+.paper-preview {
+  display: block;
+  width: 160px;
+}
+
+.paper-preview video,
+.paper-preview .preview-still {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+}
+
+.paper-preview .preview-still {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paper-preview video {
+    display: none;
+  }
+
+  .paper-preview .preview-still {
+    display: block;
+  }
+}
+
+.paper-body {
+  overflow-wrap: break-word;
+}
+
+.paper-body .papertitle,
+.paper-body p {
+  margin: 0;
+}
+
+.paper-body .authors,
+.paper-body .venue,
+.paper-links {
+  margin-top: 3px;
+}
+
+.paper-links a {
+  white-space: nowrap;
+}
+
+.reviewer-list {
+  margin: 0;
+}
+
+.reviewer-list > div {
+  display: grid;
+  grid-template-columns: 100px minmax(0, 1fr);
+  gap: 14px;
+}
+
+.reviewer-list > div + div {
+  margin-top: 8px;
+}
+
+.reviewer-list dt {
+  font-weight: 700;
+}
+
+.reviewer-list dd {
+  margin: 0;
+}
+
+.dated-list li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 24px;
+}
+
+.footer {
+  margin: 0 0 10px;
+  color: #666666;
+}
+
+@media (max-width: 600px) {
+  .profile-table,
+  .profile-table > tbody,
+  .profile-table > tbody > tr,
+  .paper-list,
+  .paper-list > tbody,
+  .paper-list .paper {
+    display: block;
+  }
+
+  .profile-table .profile-copy,
+  .profile-table .profile-photo,
+  .paper-list .paper-image,
+  .paper-list .paper-body {
+    display: block;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 16px !important;
+  }
+
+  .profile-table .profile-photo {
+    width: 224px !important;
+    margin: 0 auto;
+    padding-top: 0 !important;
+  }
+
+  .name {
+    font-size: 30px;
+  }
+
+  .name span {
+    font-size: 21px;
+  }
+
+  .paper-list .paper-image {
+    padding-bottom: 10px !important;
+  }
+
+  .paper-list .paper-body {
+    padding-top: 0 !important;
+    padding-bottom: 22px !important;
+  }
+
+  .paper-image img {
+    width: 200px;
+    max-height: 150px;
+  }
+
+  .news-list li {
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .reviewer-list > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 3px;
+  }
+
+  .dated-list li {
+    gap: 14px;
+  }
+}
