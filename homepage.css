@@ -1,4 +1,10 @@
 /* Local content styles; keep Jon Barron's native table layout at every width. */
+html {
+  /* Keep the template's 14px type on iOS without disabling pinch-to-zoom. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 body {
   background: #ffffff;
   color: #000000;
@@ -125,12 +131,16 @@ a:focus-visible {
 }
 
 .paper-body {
+  font-size: 14px;
+  line-height: normal;
   overflow-wrap: break-word;
 }
 
-.paper-body .papertitle,
-.paper-body p {
-  margin: 0;
+.paper-body a,
+.paper-body strong,
+.paper-body .papertitle {
+  font-size: inherit;
+  line-height: inherit;
 }
 
 .paper-links a {
