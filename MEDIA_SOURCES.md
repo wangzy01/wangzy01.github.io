@@ -28,4 +28,4 @@ These previews are derived from the authors' original project demonstrations. Th
 ## Profile photograph (2026-10-29)
 
 - `images/wzy-harbour.jpg`: user-provided IMG_2852.JPG, web-optimized to 1800 × 1200 JPEG. Original retained outside the published site. EXIF/XMP, IPTC and comment metadata removed; ICC color profile retained.
-- Circular display framing is CSS-only: maximum diameter 230px, with the source image at width 227%, left -4%, top -35%. No generated or retouched content.
+- Circular display framing is CSS-only: full photo-column width (original A option size, restored 2026-10-30), with the source image at width 227%, left -4%, top -35%. No generated or retouched content.

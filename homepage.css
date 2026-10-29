@@ -31,8 +31,7 @@ a:focus-visible {
 
 .portrait-crop {
   position: relative;
-  width: 90%;
-  max-width: 230px;
+  width: 100%;
   margin-inline: auto;
   aspect-ratio: 1;
   overflow: hidden;
