@@ -31,18 +31,20 @@ a:focus-visible {
 
 .portrait-crop {
   position: relative;
-  width: 100%;
+  width: 90%;
+  max-width: 230px;
+  margin-inline: auto;
   aspect-ratio: 1;
   overflow: hidden;
   border-radius: 50%;
 }
 
 .portrait-crop img {
-  /* Head-and-shoulders framing: a 600px square at (0, 330) in the original. */
+  /* CSS-only framing of the original waterfront photograph. */
   position: absolute;
-  top: -55%;
-  left: 0;
-  width: 241.333333%;
+  top: -35%;
+  left: -4%;
+  width: 227%;
   max-width: none;
   height: auto;
 }

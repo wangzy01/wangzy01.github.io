@@ -17,3 +17,15 @@ These previews are derived from the authors' original project demonstrations. Th
 - Bottom / Lighting: https://mp1-2254.github.io/assets/video/add/4.mp4
 - The demonstrations play at their original speed, stacked vertically. The bottom 80 pixels of each 1280 × 720 source are cropped to remove the table edge. The composite is 320 × 320 pixels, 15 fps, and approximately 38.13 seconds long; the shorter clutter sequence loops. Audio is removed.
 - Output: `images/mp1-preview.mp4` and `images/mp1-preview.jpg`.
+
+## PePNet publication preview (2026-10-29)
+
+- `images/pepnet-figure1.png`: Figure 1 from the user-provided accepted manuscript `tip-ieee.pdf`, page 2. Both application panels and their labels are retained; the caption and adjacent Figure 2 are excluded.
+- Paper: https://ieeexplore.ieee.org/abstract/document/11623406/
+- Public manuscript record: https://research.lancaster-university.uk/en/publications/pepnet-pose-enhanced-point-cloud-network-for-lidar-based-human-ac/
+- Rendered directly from the PDF at 3200px page height, with the figure region x=200, y=348, width=952, height=444. No generated or redrawn content.
+
+## Profile photograph (2026-10-29)
+
+- `images/wzy-harbour.jpg`: user-provided IMG_2852.JPG, web-optimized to 1800 × 1200 JPEG. Original retained outside the published site. EXIF/XMP, IPTC and comment metadata removed; ICC color profile retained.
+- Circular display framing is CSS-only: maximum diameter 230px, with the source image at width 227%, left -4%, top -35%. No generated or retouched content.
