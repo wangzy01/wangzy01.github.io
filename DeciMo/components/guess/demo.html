@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guess demo</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
+<link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans" rel="stylesheet">
+<link rel="stylesheet" href="guess.css">
+<style>body{font-family:'Noto Sans',sans-serif;color:#2f2f2f;background:#fff;padding:24px 16px}#err{color:#c00;white-space:pre-wrap}</style>
+</head><body><div id="err"></div><div id="guess"></div>
+<script>window.onerror=function(m,s,l){document.getElementById('err').textContent+=m+' ('+s+':'+l+')\n';};</script>
+<script src="../../data/guess_harper.js"></script><script src="guess.js"></script>
+<script>DMFGuess.init(document.getElementById('guess'), {base: '../../'});</script>
+</body></html>

@@ -1,0 +1,107 @@
+/* "Which person steps in?" -- guessing game on similar histories (data/guess_harper.js, videos/guess_*).
+   Look: the --ui-* custom properties of the page (site/theme_B.css sets them); the fallbacks below
+   are a neutral stand-alone look (demo.html). The rounds are a segmented control; the two answers are filled primary
+   buttons in a question panel; "Next round" is a strong button. */
+.guess { max-width: 960px; margin: 0 auto 1.9rem; color: var(--ui-text, #2f2f2f); font-family: var(--ui-font, inherit); }
+.guess-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; margin-bottom: 12px; }
+
+/* rounds: segmented control */
+.guess-rounds { display: inline-flex; gap: 2px; max-width: 100%; padding: var(--ui-seg-pad, 3px); border: 1px solid var(--ui-seg-line, transparent);
+  border-radius: var(--ui-seg-r, 10px); background: var(--ui-seg-bg, #eef0f2); }
+.guess-rounds button { display: inline-flex; align-items: center; height: var(--ui-ctl-h, 32px); padding: 0 14px; border: 0;
+  border-radius: var(--ui-seg-item-r, 8px); background: transparent; color: var(--ui-text, #4a4f55); font: 500 14px/1 var(--ui-font, inherit);
+  cursor: pointer; white-space: nowrap; transition: background-color .15s, color .15s, box-shadow .15s; }
+.guess-rounds button:hover { background: var(--ui-seg-hover, rgba(255, 255, 255, .6)); color: var(--ui-ink, #202124); }
+.guess-rounds button[aria-current="true"] { background: var(--ui-seg-sel-bg, #fff); color: var(--ui-seg-sel-ink, #202124); font-weight: 600;
+  box-shadow: var(--ui-seg-sel-shadow, 0 0 0 1px #d9dce0); }
+.guess-rounds button .done { margin-left: 6px; color: inherit; font-weight: 600; opacity: .8; }
+.guess-score { color: var(--ui-muted, #5f6368); font-size: 14px; font-variant-numeric: tabular-nums; }
+
+/* the video */
+.guess-stage { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; background: #fff; border: 1px solid var(--ui-line, #e6e6e6); border-radius: var(--ui-r-lg, 8px); }
+.guess-stage video { position: absolute; inset: 0; display: block; width: 100%; height: 100%; max-width: none; background: #fff; object-fit: contain; }
+.guess-key { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 18px; margin: 10px 0 0; font-size: 13px; line-height: 1.6;
+  color: var(--ui-text, #3c4043); }
+.guess-key[hidden] { display: none; }
+.guess-key > span { display: inline-flex; align-items: center; }
+.guess-key .lead-in { color: var(--ui-muted, #5f6368); }
+/* (2026-10-28) small stick figures, as in the videos and the paper's figures (the same swatches as site/base.css):
+   last observed (light gray, head circle), recorded future (black, dashed), futures that enter (dark) and do not (light) */
+.guess-key .sw { display: inline-block; flex: none; width: 14px; height: 20px; margin-right: 6px; background-repeat: no-repeat; background-position: center; }
+.guess-key .sw.h { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='20'%3E%3Cpath d='M7 5.6V12M7 12L4.4 18M7 12L9.6 18M7 6.4L4 11.2M7 6.4L10 11.2' fill='none' stroke='%23C3CBD6' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' stroke-opacity='1.0'/%3E%3Ccircle cx='7' cy='3.4' r='1.75' fill='none' stroke='%23C3CBD6' stroke-width='1.58' stroke-opacity='1.0'/%3E%3C/svg%3E"); }
+.guess-key .sw.y { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='20'%3E%3Cpath d='M7 5.6V12M7 12L4.4 18M7 12L9.6 18M7 6.4L4 11.2M7 6.4L10 11.2M7 5.6V2.9' fill='none' stroke='%230072B2' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' stroke-opacity='0.95'/%3E%3C/svg%3E"); }
+.guess-key .sw.n { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='20'%3E%3Cpath d='M7 5.6V12M7 12L4.4 18M7 12L9.6 18M7 6.4L4 11.2M7 6.4L10 11.2M7 5.6V2.9' fill='none' stroke='%2373b1d5' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' stroke-opacity='0.9'/%3E%3C/svg%3E"); }
+.guess-key .sw.r { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='20'%3E%3Cpath d='M7 5.6V12M7 12L4.4 18M7 12L9.6 18M7 6.4L4 11.2M7 6.4L10 11.2M7 5.6V2.9' fill='none' stroke='%23141414' stroke-width='1.3' stroke-linecap='butt' stroke-linejoin='round' stroke-opacity='1.0' stroke-dasharray='2.2 1.3'/%3E%3C/svg%3E"); }
+
+/* the question and the two answers: unmistakable primary buttons */
+.guess-ask { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; margin: 16px 0 0; padding: 16px 16px 16px 24px;
+  border: 1px solid var(--ui-accent-line, #b3d5ea); border-radius: var(--ui-r-lg, 12px); background: var(--ui-accent-soft, #eef6fb); }
+.guess-ask .q { flex: 1 1 320px; color: var(--ui-ink, #202124); font: 600 16.5px/1.45 var(--ui-font-display, inherit); letter-spacing: -.005em; }
+.guess-pick { display: flex; gap: 10px; }
+.guess-pick button { display: inline-flex; align-items: center; justify-content: center; height: 46px; min-width: 150px; padding: 0 22px; border: 0;
+  border-radius: var(--ui-btn-r, 10px); background: var(--ui-primary-bg, #0072B2); color: var(--ui-primary-ink, #fff); font: 600 15px/1 var(--ui-font, inherit);
+  cursor: pointer; box-shadow: 0 1px 2px rgba(0, 60, 100, .25); transition: background-color .15s, transform .15s, opacity .15s; }
+.guess-pick button:hover:not([disabled]) { background: var(--ui-primary-hover, #005b8f); }
+.guess-pick button:active:not([disabled]) { transform: translateY(1px); }
+.guess-pick button[disabled] { opacity: .38; cursor: default; box-shadow: none; }
+.guess button:focus-visible { outline: 2px solid var(--ui-focus, #1f6fb2); outline-offset: 2px; }
+
+/* the reveal */
+.guess-result { margin-top: 24px; }
+.guess-result[hidden] { display: none; }
+.guess-verdict { margin-bottom: 12px; text-align: center; color: var(--ui-ink, #202124); font: 400 16.5px/1.55 var(--ui-font-display, inherit); }
+.guess-verdict b { font-weight: 700; }
+.guess-table { display: grid; grid-template-columns: max-content 1fr 1fr; align-items: center; gap: 8px 16px; max-width: 680px; margin: 0 auto;
+  font: 600 14px/1.3 var(--ui-font, inherit); }
+.guess-table .h { color: var(--ui-muted, #5f6368); font-size: 12px; font-weight: 600; }
+/* method names: ink text with a colour chip (the method colour stays on the chip and the bars) */
+.guess-table .m { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; -webkit-text-fill-color: var(--ui-ink, #202124); }
+.guess-table .m::before { content: ''; flex: none; width: 10px; height: 10px; border-radius: 3px; background: currentColor; }
+.guess-bar { position: relative; height: 22px; border-radius: 6px; background: var(--ui-tint, #f1f3f5); }
+.guess-bar > span { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 6px; }
+.guess-bar > em { position: absolute; left: 6px; top: 0; color: var(--ui-ink, #2f2f2f); font-size: 12.5px; font-style: normal; font-weight: 500;
+  line-height: 22px; font-variant-numeric: tabular-nums; }
+.guess-bar.truth { outline: 2px solid var(--ui-ink, #2f2f2f); outline-offset: 2px; }
+.guess-note { margin-top: 12px; text-align: center; color: var(--ui-muted, #5f6368); font-size: 13px; line-height: 1.5; }
+.guess-next { display: flex; align-items: center; height: 42px; margin: 16px auto 0; padding: 0 20px; border: 0; border-radius: var(--ui-btn-r, 10px);
+  background: var(--ui-strong-bg, #2f2f2f); color: var(--ui-strong-ink, #fff); font: 600 14px/1 var(--ui-font, inherit); cursor: pointer;
+  transition: background-color .15s; }
+.guess-next:hover { background: var(--ui-strong-hover, #000); }
+
+/* two columns when the game is wide enough: the video on the left (about 62%), the rounds, the question, the answers and
+   the reveal on the right, so that a round, and its reveal, fit one screen */
+.guess { container-type: inline-size; }
+@container (min-width: 820px) {
+  .guess-in { display: grid; grid-template-columns: minmax(0, 1.75fr) minmax(340px, 1fr); gap: 28px; align-items: start; }
+  .guess-side .guess-top { margin-bottom: 14px; }
+  .guess-ask { flex-direction: column; align-items: stretch; gap: 14px; margin: 0; padding: 18px 20px 20px; }
+  .guess-ask .q { flex: none; }
+  .guess-pick button { flex: 1 1 0; min-width: 0; padding: 0 14px; }
+  .guess-result { margin-top: 20px; }
+  .guess-verdict { text-align: left; font-size: 15.5px; }
+  .guess-table { max-width: none; margin: 0; }
+  .guess-note { text-align: left; }
+  .guess-next { margin: 16px 0 0; }
+  .guess.is-answered .guess-pick { display: none; }       /* after the answer: the question stays, the reveal follows */
+}
+@media (max-width: 640px) {
+  .guess-rounds button { padding: 0 12px; font-size: 13.5px; }
+  .guess-ask { padding: 16px; }
+  .guess-ask .q { flex-basis: 100%; font-size: 15.5px; }
+  .guess-pick { width: 100%; }
+  .guess-pick button { flex: 1; min-width: 0; padding: 0 12px; }
+  .guess-table { gap: 6px 10px; font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .guess *, .guess *::before, .guess *::after { transition: none !important; animation: none !important; }
+}
+
+/* replay controls under the video (2026-10-23) */
+.guess-ctl { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.guess-replay { display: inline-flex; align-items: center; gap: 6px; height: var(--ui-ctl-h, 32px); padding: 0 12px;
+  border: 1px solid var(--ui-line, #d5dbe1); border-radius: var(--ui-btn-r, 10px); background: var(--ui-btn-bg, #fff);
+  color: var(--ui-ink, #202124); font: 500 14px/1 var(--ui-font, inherit); cursor: pointer;
+  transition: background-color .15s, border-color .15s; }
+.guess-replay:hover { background: var(--ui-tint, #f1f3f5); border-color: var(--ui-accent-line, #b3d5ea); }
+.guess-replay span { font-size: 15px; line-height: 1; }
+.guess-replay[hidden] { display: none; }

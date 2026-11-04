@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Decision-Ready Human Motion Forecasting: Calibrated, Robot-Responsive Futures Within One Perception Cycle</title>
+  <meta name="description" content="Decision-ready human motion forecasting: DAVE-Motion (Delivery, Accuracy, and Value Evaluation of Human Motion Forecasts for Robots in Shared Spaces), a protocol that scores the delivery, accuracy, and decision value of forecasts for robots that share space with people, and DeciMo, a Decision-ready Motion forecaster that trains the set the robot reads, as the robot reads it, and delivers 50 futures within one frame.">
+  <meta name="keywords" content="human motion forecasting, robots sharing space with people, decision-ready forecasting, forecast value, proper scoring rules, one-step generation, stochastic prediction, DAVE-Motion, DeciMo">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="image" href="videos/posters/harper_bestofk_840.jpg" fetchpriority="high">
+  <link rel="stylesheet" href="site/base.css">
+  <link rel="stylesheet" href="components/ranking/ranking.css">
+  <link rel="stylesheet" href="components/robot_game/robot_game.css">
+  <link rel="stylesheet" href="components/explorer/explorer.css">
+  <link rel="stylesheet" href="components/guess/guess.css">
+  <link rel="stylesheet" href="site/theme_B.css">
+</head>
+<body class="theme-b">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-pointer" viewBox="0 0 16 16"><path d="M3.2 1.6v11.3l3.1-2.8 2.1 4.5 2-.95-2.05-4.45h4.3z" fill="currentColor"/></symbol>
+  <symbol id="i-play" viewBox="0 0 16 16"><path d="M4.5 2.8v10.4l8.3-5.2z" fill="currentColor"/></symbol>
+  <symbol id="i-fig" viewBox="0 0 16 16"><rect x="1.8" y="2.8" width="12.4" height="10.4" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M3.8 11l3-3.1 2.1 2.1 1.6-1.6 2 2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 16 16"><path d="M2.5 8h10M8.8 4.2 12.6 8l-3.8 3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-zoom" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m10.4 10.4 3.6 3.6M7 5v4M5 7h4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 16 16"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 16 16"><rect x="5.2" y="5.2" width="8.4" height="8.4" rx="1.4" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M10.8 3.2V2.4H2.4v8.4h.8" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+  <symbol id="i-up" viewBox="0 0 16 16"><path d="M8 13V3M4.2 6.8 8 3l3.8 3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ================================================================== sticky header: six sections -->
+<header class="hdr">
+  <div class="hdr-in">
+    <a class="brand" href="#top" aria-label="DeciMo: back to the top"><b>DeciMo</b><span>Decision-ready motion forecasting</span></a>
+    <nav class="nav" aria-label="Sections">
+      <div class="nav-box">
+        <div class="nav-scroll">
+          <ol class="pills">
+            <li><a class="pill" href="#accuracy" data-nav="accuracy"><span class="n" aria-hidden="true"></span>Accuracy vs. value</a></li>
+            <li><a class="pill" href="#value" data-nav="value"><span class="n" aria-hidden="true"></span>Decision value</a></li>
+            <li><a class="pill" href="#questions" data-nav="questions"><span class="n" aria-hidden="true"></span>Every question</a></li>
+            <li><a class="pill" href="#context" data-nav="context"><span class="n" aria-hidden="true"></span>Context</a></li>
+            <li><a class="pill" href="#datasets" data-nav="datasets"><span class="n" aria-hidden="true"></span>Four datasets</a></li>
+            <li><a class="pill" href="#method" data-nav="method"><span class="n" aria-hidden="true"></span>Method</a></li>
+          </ol>
+        </div>
+      </div>
+    </nav>
+    <button class="menu-btn" type="button" data-menu-button aria-expanded="false" aria-controls="menu">
+      <span class="ham" aria-hidden="true"><i></i><i></i><i></i></span><span class="lbl" data-current-label>Sections</span><svg class="ico" aria-hidden="true"><use href="#i-chev"/></svg>
+    </button>
+  </div>
+  <div class="menu" id="menu" hidden>
+    <nav aria-label="Sections menu">
+      <ol>
+        <li><a class="mi" href="#accuracy" data-nav="accuracy" data-label="1 · Accuracy vs. value"><span class="mn">01</span><span><span class="mt">Accuracy is not decision value</span><span class="md">Two rankings of eleven forecasters</span></span><svg class="ico ma" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+        <li><a class="mi" href="#value" data-nav="value" data-label="2 · Decision value"><span class="mn">02</span><span><span class="mt">What a forecast is worth to a robot</span><span class="md">V(&alpha;) and &ldquo;Be the robot&rdquo;</span></span><svg class="ico ma" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+        <li><a class="mi" href="#questions" data-nav="questions" data-label="3 · Every question"><span class="mn">03</span><span><span class="mt">One set of futures, every question</span><span class="md">50 futures, 90 questions, a 3D explorer</span></span><svg class="ico ma" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+        <li><a class="mi" href="#context" data-nav="context" data-label="4 · Context"><span class="mn">04</span><span><span class="mt">Forecasts that respond to the robot and to the person</span><span class="md">Robot history, similar histories, a guessing game</span></span><svg class="ico ma" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+        <li><a class="mi" href="#datasets" data-nav="datasets" data-label="5 · Four datasets"><span class="mn">05</span><span><span class="mt">Four datasets, four robots</span><span class="md">One window each and the test windows</span></span><svg class="ico ma" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+        <li><a class="mi" href="#method" data-nav="method" data-label="6 · Method"><span class="mn">06</span><span><span class="mt">Method</span><span class="md">Overview, calibration, set head</span></span><svg class="ico ma" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+      </ol>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<!-- ================================================================== hero: title, authors, teaser, key numbers -->
+<section class="hero" id="top" aria-labelledby="page-title">
+  <div class="wrap hero-in">
+    <p class="status"><i aria-hidden="true"></i>Under review</p>
+    <h1 class="title" id="page-title">Decision-Ready Human Motion Forecasting: Calibrated, Robot-Responsive Futures Within One Perception Cycle</h1>
+    <p class="takeaway">A robot acts on how many of the forecast futures come within a warning distance, and when, not on the one future closest to what happened.</p>
+    <p class="contrib"><b class="nb">DAVE-Motion</b> (Delivery, Accuracy, and Value Evaluation of Human Motion Forecasts for Robots in Shared Spaces) scores the delivery, accuracy, and decision value of forecasts at every precaution cost. <b>DeciMo</b>, a Decision-ready Motion forecaster, trains the set the robot reads, as the robot reads it, and delivers 50 futures within one frame.</p>
+    <div class="byline">
+      <div class="byline-top">
+        <p class="authors">Ziyi Wang<sup>1</sup>, Xinshun Wang<sup>1</sup>, Linyi Jiang<sup>2</sup>, Yangting Lin<sup>1</sup>, Xiangtai Li<sup>3</sup>, Ming-Hsuan Yang<sup>4</sup>, Mengyuan Liu<sup>1,&dagger;</sup></p>
+      </div>
+      <div class="byline-bot">
+        <p class="affils"><span><sup>1</sup>State Key Laboratory of General Artificial Intelligence, Peking University, Shenzhen Graduate School, Shenzhen, China</span>
+          <span><sup>2</sup>University of Electronic Science and Technology of China, Chengdu, China &nbsp;&middot;&nbsp; <sup>3</sup>Nanyang Technological University, Singapore</span>
+          <span><sup>4</sup>University of California at Merced, Merced, CA, USA &nbsp;&middot;&nbsp; <sup>&dagger;</sup>Corresponding author</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="hero-media">
+  <figure class="media teaser">
+    <div class="teaser-band">
+      <div class="wrap">
+        <div class="card">
+          <div class="frame r16x9">
+            <video class="autoplay-visible" controls muted loop playsinline preload="none" width="1920" height="1080"
+                   poster="videos/posters/harper_bestofk_840.jpg" aria-label="What a forecast is scored for: DeciMo and CoMusion on a HARPER window">
+              <source src="videos/harper_bestofk_840.webm" type="video/webm">
+              <source src="videos/harper_bestofk_840.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+      </div>
+    </div>
+    <figcaption class="wrap teaser-cap"><span class="cap-in">
+      <span class="fkey"><span><i class="sw h"></i>last observed</span><span><i class="sw r"></i>recorded future</span><span class="lead-in">Every colored skeleton is one forecast future:</span><span><i class="sw y"></i>enters 0.2&nbsp;m within 1&nbsp;s</span><span><i class="sw n"></i>does not</span></span>
+      <b>What a forecast is scored for.</b> On a HARPER window, the closest futures of DeciMo and CoMusion are almost equally close to what happened (best-of-<i>K</i> error 0.13 and 0.14&nbsp;m), but 38 of the 50 futures of DeciMo enter the warning distance against 4 of CoMusion&rsquo;s. A robot whose precaution costs a fifth of the loss it avoids (&alpha;&nbsp;=&nbsp;0.2, the top of the precaution band) therefore slows down early with DeciMo and stops late with CoMusion. The person came within 0.2&nbsp;m after 0.43&nbsp;s.
+    </span></figcaption>
+  </figure>
+  <div class="wrap">
+    <div class="stats" role="list">
+      <div class="stat" role="listitem">
+        <b class="dmf"><span class="num" data-key="MAIN.HARPER.DMF_HR.PBS.O.win">0.867</span></b>
+        <span class="lbl">decision value of DeciMo (precaution-band skill, 1&nbsp;=&nbsp;knowing the future), against <span class="num" data-key="TXT.HARPER.BestOther.PBS.O.win">0.795</span> for the best other forecaster</span>
+      </div>
+      <div class="stat" role="listitem">
+        <b class="dmf"><span class="num" data-key="MAIN.HARPER.DMF_HR.MissFPR10.O">2.0</span><span class="unit">%</span></b>
+        <span class="lbl">of the entries missed at a false alarm rate of at most 10%, against at least <span class="num" data-key="TXT.HARPER.BestOther.MissFPR10.O">5.3</span>% for the other forecasters</span>
+      </div>
+      <div class="stat" role="listitem">
+        <b class="dmf"><span class="num" data-key="TXT.HARPER.DMF.dMissPct.abs">66</span><span class="unit">%</span></b>
+        <span class="lbl">fewer missed entries when DeciMo also sees the robot history, against at most <span class="num" data-key="TXT.HARPER.Others.dMissPct.best">33</span>% fewer for the other forecasters</span>
+      </div>
+      <div class="stat" role="listitem">
+        <b>&tau;&nbsp;=&nbsp;<span class="num" data-key="RANK.HARPER.HR.tauPBS">0.45</span></b>
+        <span class="lbl">rank agreement between best-of-<i>K</i> error and decision value over the forecasters with the robot history (<span class="num" data-key="RANK.HARPER.H.tauPBS">0.56</span> without it)</span>
+      </div>
+    </div>
+    <p class="stats-note">All four numbers: HARPER test set, reference question (entry within 0.2&nbsp;m in 1&nbsp;s while the robot holds its pose).</p>
+  </div>
+</div>
+
+<!-- ================================================================== contents: one card per section -->
+<section class="toc" aria-labelledby="toc-h">
+  <div class="wrap">
+    <div class="toc-hd"><h2 class="toc-h" id="toc-h">On this page</h2></div>
+    <ol class="toc-grid">
+      <li><a class="toc-card" href="#accuracy">
+        <span class="toc-top"><span class="toc-n">01</span><span class="toc-m"><span class="mk mk-int"><svg class="ico" aria-hidden="true"><use href="#i-pointer"/></svg>Interactive</span></span></span>
+        <span class="toc-t">Accuracy is not decision value</span>
+        <span class="toc-d">Rankings of eleven forecasters by best-of-<i>K</i> error and by decision value agree only moderately.</span>
+        <span class="toc-go"><span class="toc-go-t">Go to section</span><svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></span>
+      </a></li>
+      <li><a class="toc-card" href="#value">
+        <span class="toc-top"><span class="toc-n">02</span><span class="toc-m"><span class="mk mk-int"><svg class="ico" aria-hidden="true"><use href="#i-pointer"/></svg>Interactive</span></span></span>
+        <span class="toc-t">What a forecast is worth to a robot</span>
+        <span class="toc-d">The value of acting on the forecast for every cost of precaution. Then be the robot.</span>
+        <span class="toc-go"><span class="toc-go-t">Go to section</span><svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></span>
+      </a></li>
+      <li><a class="toc-card" href="#questions">
+        <span class="toc-top"><span class="toc-n">03</span><span class="toc-m"><span class="mk"><svg class="ico" aria-hidden="true"><use href="#i-play"/></svg>Video</span><span class="mk mk-int"><svg class="ico" aria-hidden="true"><use href="#i-pointer"/></svg>Interactive</span></span></span>
+        <span class="toc-t">One set of futures, every question</span>
+        <span class="toc-d">One set of 50 futures answers 90 questions, without running the model again.</span>
+        <span class="toc-go"><span class="toc-go-t">Go to section</span><svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></span>
+      </a></li>
+      <li><a class="toc-card" href="#context">
+        <span class="toc-top"><span class="toc-n">04</span><span class="toc-m"><span class="mk"><svg class="ico" aria-hidden="true"><use href="#i-play"/></svg>Video</span><span class="mk mk-int"><svg class="ico" aria-hidden="true"><use href="#i-pointer"/></svg>Interactive</span></span></span>
+        <span class="toc-t">Forecasts that respond to the robot and to the person</span>
+        <span class="toc-d">The robot history changes the futures, and so do subtle cues of the person.</span>
+        <span class="toc-go"><span class="toc-go-t">Go to section</span><svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></span>
+      </a></li>
+      <li><a class="toc-card" href="#datasets">
+        <span class="toc-top"><span class="toc-n">05</span><span class="toc-m"><span class="mk"><svg class="ico" aria-hidden="true"><use href="#i-play"/></svg>Video</span><span class="mk"><svg class="ico" aria-hidden="true"><use href="#i-fig"/></svg>Figure</span></span></span>
+        <span class="toc-t">Four datasets, four robots</span>
+        <span class="toc-d">A legged robot, a mobile base, a hand-guided arm, and an industrial arm.</span>
+        <span class="toc-go"><span class="toc-go-t">Go to section</span><svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></span>
+      </a></li>
+      <li><a class="toc-card" href="#method">
+        <span class="toc-top"><span class="toc-n">06</span><span class="toc-m"><span class="mk"><svg class="ico" aria-hidden="true"><use href="#i-fig"/></svg>Figure</span></span></span>
+        <span class="toc-t">Method</span>
+        <span class="toc-d">One-pass generation, condition-consistent multi-future learning, deployed-set training with a set head, and calibration.</span>
+        <span class="toc-go"><span class="toc-go-t">Go to section</span><svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></span>
+      </a></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================================================================== 1 accuracy is not decision value -->
+<section class="sec" id="accuracy" aria-labelledby="accuracy-h">
+  <div class="wrap">
+    <header class="sec-hd">
+      <div class="sec-hd-l"><p class="sec-n"><span class="n">01</span><span class="sec-n-t">Section</span></p><h2 class="sec-t" id="accuracy-h">Accuracy is not decision value</h2></div>
+      <p class="sec-lead">Rankings by best-of-<i>K</i> error agree only moderately with the decision value of <span class="nb">DAVE-Motion</span> and can reverse.</p>
+    </header>
+    <div class="prose"><p>In the HARPER window at the top of the page, the closest futures of DeciMo and CoMusion are almost equally accurate, yet a robot that acts on the whole set slows down early with DeciMo and stops late with CoMusion. Over the whole HARPER test set, best-of-<i>K</i> ADE, which scores only the forecast future closest to the recorded one, ranks eleven forecasters (each with and without the robot history) in an order that agrees only moderately with the decision value that a robot draws from the whole set: Kendall&rsquo;s &tau; between the two rankings is <span class="num" data-key="RANK.HARPER.HR.tauPBS">0.45</span> with the robot history and <span class="num" data-key="RANK.HARPER.H.tauPBS">0.56</span> without it. The order can reverse even between two generators of 50 futures: with the human history alone, SPARD has a <span class="num" data-key="TXT.HARPER.SPARD_H.dADEpct.vsSkeletonDiffusion_H">6</span>% lower ADE than SkeletonDiffusion, yet a PBS of <span class="num" data-key="MAIN.HARPER.SPARD_H.PBS.O.win">0.703</span> against <span class="num" data-key="MAIN.HARPER.SkeletonDiffusion_H.PBS.O.win">0.795</span>.</p></div>
+
+    <div class="icard" data-cue=".rk-seg">
+      <div class="icard-hd">
+        <span class="ilabel"><svg class="ico" aria-hidden="true"><use href="#i-pointer"/></svg>Interactive</span>
+        <h3 class="icard-t">Two rankings of eleven forecasters</h3>
+        <p class="icard-i">Pick a view to reorder the forecasters. Hover, tap, or use the arrow keys to read the values of one forecaster.</p>
+      </div>
+      <div class="icard-bd">
+        <noscript><p class="js-note">This interactive comparison needs JavaScript.</p></noscript>
+        <div class="ranking-reversal" id="ranking-reversal"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================== 2 what a forecast is worth to a robot -->
+<section class="sec alt" id="value" aria-labelledby="value-h">
+  <div class="wrap">
+    <header class="sec-hd">
+      <div class="sec-hd-l"><p class="sec-n"><span class="n">02</span><span class="sec-n-t">Section</span></p><h2 class="sec-t" id="value-h">What a forecast is worth to a robot</h2></div>
+      <p class="sec-lead">The value of acting on the forecast, for every cost of precaution.</p>
+    </header>
+    <div class="prose"><p>Each proper event score of <span class="nb">DAVE-Motion</span> averages the regret of robots that act on the forecast. For a robot whose precaution costs a fraction &alpha; of the loss it avoids, the relative value <i>V</i>(&alpha;) is 1 for knowing the future and 0 for knowing only the base rate. The precaution-band skill (PBS) summarizes it over cost ratios from 0.02 to 0.2, where precaution is cheap, as the share of the base-rate regret that the forecast removes for these robots.</p></div>
+
+    <div class="icard" data-cue=".vchart-plot">
+      <div class="icard-hd">
+        <span class="ilabel"><svg class="ico" aria-hidden="true"><use href="#i-pointer"/></svg>Interactive</span>
+        <h3 class="icard-t"><i>V</i>(&alpha;) on HARPER</h3>
+        <p class="icard-i">Hover, tap, or use the arrow keys to read every forecaster at one cost ratio. Click a name to hide or show its curve.</p>
+      </div>
+      <div class="icard-bd">
+        <figure class="vchart" id="vchart" data-initial-alpha="0.1">
+          <div class="vchart-legend" role="group" aria-label="Forecasters: select to hide or show a curve"></div>
+          <div class="vchart-plot" tabindex="0" aria-label="Relative value V(alpha) of nine forecasters on HARPER. Use the left and right arrow keys to move the cursor along the cost ratio." aria-describedby="vchart-caption">
+            <svg aria-hidden="true"></svg>
+            <div class="vchart-tip" hidden></div>
+            <div class="sr-only" aria-live="polite"></div>
+          </div>
+          <noscript><p class="js-note">The interactive chart needs JavaScript.</p></noscript>
+        </figure>
+      </div>
+      <p class="icard-ft" id="vchart-caption">Reference question (entry within 0.2&nbsp;m in 1&nbsp;s, robot holds its pose), forecasters with the robot history. Dashed: deterministic forecasters. Curves are cut off below &minus;0.4. The step at &alpha;&nbsp;=&nbsp;0.02 is the resolution 1/<i>K</i> of a set of 50 futures.</p>
+    </div>
+
+    <div class="icard" data-cue=".rg-top .rg-btn">
+      <div class="icard-hd">
+        <span class="ilabel"><svg class="ico" aria-hidden="true"><use href="#i-pointer"/></svg>Interactive</span>
+        <h3 class="icard-t">Be the robot</h3>
+        <p class="icard-i">Drag the slider to choose the cost ratio &alpha;, or sweep the precaution band. The robot slows down when the share p&#770; of forecast futures that come within 0.2&nbsp;m exceeds &alpha;.</p>
+      </div>
+      <div class="icard-bd">
+        <noscript><p class="js-note">This interactive component needs JavaScript.</p></noscript>
+        <div class="robot-game" id="robot-game"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================== 3 one set of futures, every question -->
+<section class="sec" id="questions" aria-labelledby="questions-h">
+  <div class="wrap">
+    <header class="sec-hd">
+      <div class="sec-hd-l"><p class="sec-n"><span class="n">03</span><span class="sec-n-t">Section</span></p><h2 class="sec-t" id="questions-h">One set of futures, every question</h2></div>
+      <p class="sec-lead">One set of 50 futures answers 90 questions, without running the model again.</p>
+    </header>
+    <div class="prose"><p>A robot may ask about another warning distance, another horizon, an exit instead of an entry, or another query geometry. DeciMo answers all of them from the same 50 futures, including the retreating virtual object that was never used in training.</p></div>
+    <figure class="media">
+      <div class="card split">
+        <div class="frame r16x9">
+          <video class="autoplay-visible" controls muted loop playsinline preload="none" width="1920" height="1080"
+                 poster="videos/posters/harper_one_set_1684.jpg" aria-label="One set of DeciMo futures answers six questions on a HARPER window">
+            <source src="videos/harper_one_set_1684.webm" type="video/webm">
+            <source src="videos/harper_one_set_1684.mp4" type="video/mp4">
+          </video>
+        </div>
+        <figcaption>
+          <span class="fkey"><span><i class="sw h"></i>last observed</span><span><i class="sw r"></i>recorded future</span><span class="lead-in">Every colored skeleton and curve is one forecast future of DeciMo:</span><span><i class="sw y"></i>enters 0.2&nbsp;m within 1&nbsp;s</span><span><i class="sw n"></i>does not</span></span>
+          HARPER: the person and the quadruped walk toward each other. One call of DeciMo, six questions: within 0.2 or 0.5&nbsp;m, within 0.5 or 1&nbsp;s, while the robot holds its pose (O) or follows its executed motion (P/R), and for a retreating virtual object (VR, held out from training). Cell color: forecast probability.
+        </figcaption>
+      </div>
+    </figure>
+
+    <div class="icard" data-cue=".dmfx-qg">
+      <div class="icard-hd">
+        <span class="ilabel"><svg class="ico" aria-hidden="true"><use href="#i-pointer"/></svg>Interactive</span>
+        <h3 class="icard-t">Any window, any question</h3>
+        <p class="icard-i">Pick a window, then click any of the 90 questions in the grid. Drag the 3D view to turn it.</p>
+      </div>
+      <div class="icard-bd">
+        <noscript><p class="js-note">The explorer needs JavaScript.</p></noscript>
+        <div id="explorer" class="slot-explorer"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================== 4 forecasts that respond to the robot and to the person -->
+<section class="sec alt" id="context" aria-labelledby="context-h">
+  <div class="wrap">
+    <header class="sec-hd">
+      <div class="sec-hd-l"><p class="sec-n"><span class="n">04</span><span class="sec-n-t">Section</span></p><h2 class="sec-t" id="context-h">Forecasts that respond to the robot and to the person</h2></div>
+      <p class="sec-lead">The futures change with what the robot does and with subtle cues of the person.</p>
+    </header>
+
+    <div class="sub">
+      <h3 class="sub-t"><span class="k">4.1</span>The robot history matters</h3>
+      <div class="prose"><p>People react to the robot, so the futures must change with its motion. On HARPER, the robot history improves the forecasts of DeciMo the most: it lowers the best-of-<i>K</i> ADE of DeciMo by <span class="num" data-key="TXT.HARPER.DMF.dADEpct.abs">11</span>% and the share of entries it misses by <span class="num" data-key="TXT.HARPER.DMF.dMissPct.abs">66</span>%, against at most <span class="num" data-key="TXT.HARPER.Others.dADEpct.maxabs">3</span>% and <span class="num" data-key="TXT.HARPER.Others.dMissPct.best">33</span>% for the other forecasters.</p></div>
+      <div class="vtabs" id="vt-robot">
+        <div class="tabbar">
+          <span class="tabbar-l" id="vt-robot-l">Dataset</span>
+          <div class="seg" role="tablist" aria-labelledby="vt-robot-l">
+            <button type="button" role="tab" aria-selected="true" aria-controls="vt-robot-panel" data-i="0">COMFI</button>
+            <button type="button" role="tab" aria-selected="false" aria-controls="vt-robot-panel" data-i="1">CHICO: another robot history</button>
+            <button type="button" role="tab" aria-selected="false" aria-controls="vt-robot-panel" data-i="2">HARPER</button>
+          </div>
+        </div>
+        <figure class="media" id="vt-robot-panel" role="tabpanel" aria-labelledby="vt-robot-l">
+          <div class="card split">
+            <div class="frame r16x9">
+              <video class="autoplay-visible" controls muted loop playsinline preload="none" width="1920" height="1080"
+                     poster="videos/posters/comfi_robot_input_667.jpg" aria-label="DeciMo and HumanMAC with and without the robot history on a COMFI window">
+                <source src="videos/comfi_robot_input_667.webm" type="video/webm">
+                <source src="videos/comfi_robot_input_667.mp4" type="video/mp4">
+              </video>
+            </div>
+            <figcaption><span class="fkey"><span><i class="sw h"></i>last observed</span><span><i class="sw r"></i>recorded future</span><span class="lead-in">Every colored skeleton is one forecast future:</span><span><i class="sw y"></i>enters 0.2&nbsp;m within 1&nbsp;s</span><span><i class="sw n"></i>does not</span></span>COMFI: guiding the arm, the person leans toward it until the upper arm comes within 0.2&nbsp;m (the guiding forearm is not counted). With the robot history, 37 of the 50 futures of DeciMo enter, against 3 without it. HumanMAC: 4 and 8.</figcaption>
+          </div>
+        </figure>
+        <script type="application/json" class="vtabs-data">[
+ {"name": "comfi_robot_input_667", "label": "DeciMo and HumanMAC with and without the robot history on a COMFI window", "caption": "<span class=\"fkey\"><span><i class=\"sw h\"></i>last observed</span><span><i class=\"sw r\"></i>recorded future</span><span class=\"lead-in\">Every colored skeleton is one forecast future:</span><span><i class=\"sw y\"></i>enters 0.2&nbsp;m within 1&nbsp;s</span><span><i class=\"sw n\"></i>does not</span></span>COMFI: guiding the arm, the person leans toward it until the upper arm comes within 0.2&nbsp;m (the guiding forearm is not counted). With the robot history, 37 of the 50 futures of DeciMo enter, against 3 without it. HumanMAC: 4 and 8."},
+ {"name": "chico_swap_980", "label": "DeciMo and CoMusion with the recorded and with another robot history on a CHICO window", "caption": "<span class=\"fkey\"><span><i class=\"sw h\"></i>last observed</span><span><i class=\"sw r\"></i>recorded future</span><span class=\"lead-in\">Every colored skeleton is one forecast future:</span><span><i class=\"sw y\"></i>enters 0.2&nbsp;m within 1&nbsp;s</span><span><i class=\"sw n\"></i>does not</span></span>CHICO: the same person, with the recorded robot history and with that of another window (faded robot). 39 of the 50 futures of DeciMo enter 0.2&nbsp;m within 1&nbsp;s with the recorded robot history and 2 with the other one, whereas CoMusion gives 28 of 50 in both cases. Distances are to the recorded robot."},
+ {"name": "harper_robot_input_1952", "label": "DeciMo and HumanMAC with and without the robot history on a HARPER window", "caption": "<span class=\"fkey\"><span><i class=\"sw h\"></i>last observed</span><span><i class=\"sw r\"></i>recorded future</span><span class=\"lead-in\">Every colored skeleton is one forecast future:</span><span><i class=\"sw y\"></i>enters 0.2&nbsp;m within 1&nbsp;s</span><span><i class=\"sw n\"></i>does not</span></span>HARPER: the quadruped walks up to the person, who then steps toward it. With the human history alone, 1 of the 50 futures of DeciMo enters 0.2&nbsp;m within 1&nbsp;s, and with the robot history, 28 do. HumanMAC gives 0 of 50 either way."}
+]</script>
+      </div>
+
+      <figure class="media fig w1120">
+        <div class="card">
+          <button type="button" class="zoom frame" aria-label="Enlarge the figure: joint response to the robot history">
+            <img src="assets/s_joint_heatmaps.png" width="2240" height="638" loading="lazy" decoding="async"
+                 alt="Heat maps over joints and time on HARPER: how far the futures of DeciMo, CoMusion, SkeletonDiffusion, and HumanMAC move when the robot history is swapped for that of another window. DeciMo responds most, increasingly over the horizon.">
+            <span class="zoom-badge" aria-hidden="true"><svg class="ico"><use href="#i-zoom"/></svg><span class="zt">Click to enlarge</span></span>
+          </button>
+          <figcaption>Where in the body and when the forecasts respond to the robot on HARPER: the displacement of each joint (cm) when the robot history is swapped for that of another window, with the same model and the same noise, averaged over the futures and over the 111 test windows whose forecasts with swapped robot histories were saved.</figcaption>
+        </div>
+      </figure>
+    </div>
+
+    <div class="sub">
+      <h3 class="sub-t"><span class="k">4.2</span>Similar histories, different futures</h3>
+      <div class="prose"><p>In two HARPER windows, the quadruped walks up to a person who stands still. In one, the person then steps toward the robot. In the other, the person stays. Of the four forecasters shown, only DeciMo tells the two windows apart.</p></div>
+      <figure class="media">
+        <div class="card split">
+          <div class="frame r16x9">
+            <video class="autoplay-visible" controls muted loop playsinline preload="none" width="1920" height="1080"
+                   poster="videos/posters/harper_similar_1885_1872.jpg" aria-label="DeciMo futures in two HARPER windows with similar histories">
+              <source src="videos/harper_similar_1885_1872.webm" type="video/webm">
+              <source src="videos/harper_similar_1885_1872.mp4" type="video/mp4">
+            </video>
+          </div>
+          <figcaption><span class="fkey"><span><i class="sw h"></i>last observed</span><span><i class="sw r"></i>recorded future</span><span class="lead-in">Every colored skeleton is one forecast future of DeciMo:</span><span><i class="sw y"></i>enters 0.2&nbsp;m within 1&nbsp;s</span><span><i class="sw n"></i>does not</span></span>In both windows the quadruped walks up to a person who stands still. DeciMo lets 32 of its 50 futures enter in A, where the person then steps in, and 1 in B, where the person stays, whereas CoMusion, HumanMAC, and AINet let at most 0.04 of their futures enter in either window.</figcaption>
+        </div>
+      </figure>
+
+      <div class="icard" data-cue=".guess-pick button">
+        <div class="icard-hd">
+          <span class="ilabel"><svg class="ico" aria-hidden="true"><use href="#i-pointer"/></svg>Interactive</span>
+          <h3 class="icard-t">Your turn: which person steps in?</h3>
+          <p class="icard-i">Watch the observed second of two similar windows (replay it as often as you like), then click the person who comes within 0.2&nbsp;m of the robot in the next second.</p>
+        </div>
+        <div class="icard-bd">
+          <noscript><p class="js-note">The guessing game needs JavaScript.</p></noscript>
+          <div id="guess" class="slot-guess"></div>
+        </div>
+      </div>
+
+      <figure class="media fig w1120">
+        <div class="card">
+          <button type="button" class="zoom frame" aria-label="Enlarge the figure: futures projected onto two principal components">
+            <img src="assets/s_manifold.png" width="2240" height="757" loading="lazy" decoding="async"
+                 alt="The 50 futures of DeciMo, CoMusion, and HumanMAC in three HARPER windows projected onto two principal components, with the recorded future as a star.">
+            <span class="zoom-badge" aria-hidden="true"><svg class="ico"><use href="#i-zoom"/></svg><span class="zt">Click to enlarge</span></span>
+          </button>
+          <figcaption>The 50 futures of DeciMo, CoMusion, and HumanMAC in three HARPER windows, projected onto their first two principal components. Filled: futures that enter 0.2&nbsp;m within 1&nbsp;s. Star: recorded future.</figcaption>
+        </div>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================== 5 four datasets, four robots -->
+<section class="sec" id="datasets" aria-labelledby="datasets-h">
+  <div class="wrap">
+    <header class="sec-hd">
+      <div class="sec-hd-l"><p class="sec-n"><span class="n">05</span><span class="sec-n-t">Section</span></p><h2 class="sec-t" id="datasets-h">Four datasets, four robots</h2></div>
+      <p class="sec-lead">One window of each dataset in motion, and the situations that their test windows cover.</p>
+    </header>
+
+    <div class="sub">
+      <h3 class="sub-t"><span class="k">5.1</span>One window per dataset</h3>
+      <div class="prose"><p>DeciMo and the comparators on one test window of each dataset, all with the robot history. The tables of the paper give the averages.</p></div>
+      <div class="vtabs" id="vt-compare">
+        <div class="tabbar">
+          <span class="tabbar-l" id="vt-compare-l">Dataset</span>
+          <div class="seg" role="tablist" aria-labelledby="vt-compare-l">
+            <button type="button" role="tab" aria-selected="true" aria-controls="vt-compare-panel" data-i="0">HARPER</button>
+            <button type="button" role="tab" aria-selected="false" aria-controls="vt-compare-panel" data-i="1">COMFI</button>
+            <button type="button" role="tab" aria-selected="false" aria-controls="vt-compare-panel" data-i="2">UF-Retail-HRI</button>
+            <button type="button" role="tab" aria-selected="false" aria-controls="vt-compare-panel" data-i="3">CHICO</button>
+          </div>
+        </div>
+        <figure class="media" id="vt-compare-panel" role="tabpanel" aria-labelledby="vt-compare-l">
+          <div class="card split">
+            <div class="frame r16x9">
+              <video class="autoplay-visible" controls muted loop playsinline preload="none" width="1920" height="1080"
+                     poster="videos/posters/harper_compare_840.jpg" aria-label="Four forecasters on a HARPER window">
+                <source src="videos/harper_compare_840.webm" type="video/webm">
+                <source src="videos/harper_compare_840.mp4" type="video/mp4">
+              </video>
+            </div>
+            <figcaption><span class="fkey"><span><i class="sw h"></i>last observed</span><span><i class="sw r"></i>recorded future</span><span class="lead-in">Every colored skeleton is one forecast future:</span><span><i class="sw y"></i>enters 0.2&nbsp;m within 1&nbsp;s</span><span><i class="sw n"></i>does not</span></span>HARPER: the person bends over the quadruped and touches it. 38 of the 50 futures of DeciMo enter 0.2&nbsp;m within 1&nbsp;s, against 4 of CoMusion and 6 of HumanMAC, and the single future of AINet does not.</figcaption>
+          </div>
+        </figure>
+        <script type="application/json" class="vtabs-data">[
+ {"name": "harper_compare_840", "label": "Four forecasters on a HARPER window", "caption": "<span class=\"fkey\"><span><i class=\"sw h\"></i>last observed</span><span><i class=\"sw r\"></i>recorded future</span><span class=\"lead-in\">Every colored skeleton is one forecast future:</span><span><i class=\"sw y\"></i>enters 0.2&nbsp;m within 1&nbsp;s</span><span><i class=\"sw n\"></i>does not</span></span>HARPER: the person bends over the quadruped and touches it. 38 of the 50 futures of DeciMo enter 0.2&nbsp;m within 1&nbsp;s, against 4 of CoMusion and 6 of HumanMAC, and the single future of AINet does not."},
+ {"name": "comfi_compare_2532", "label": "Four forecasters on a COMFI window", "caption": "<span class=\"fkey\"><span><i class=\"sw h\"></i>last observed</span><span><i class=\"sw r\"></i>recorded future</span><span class=\"lead-in\">Every colored skeleton is one forecast future:</span><span><i class=\"sw y\"></i>leaves 0.3&nbsp;m within 1&nbsp;s</span><span><i class=\"sw n\"></i>does not</span></span>COMFI: the person lets go of the arm and steps back. The question is whether the person leaves 0.3&nbsp;m within 1&nbsp;s. 48 of the 50 futures of DeciMo leave, against 17 of CoMusion and 29 of HumanMAC, and the single future of AINet stays."},
+ {"name": "uf_compare_1271", "label": "Four forecasters on a UF-Retail-HRI window", "caption": "<span class=\"fkey\"><span><i class=\"sw h\"></i>last observed</span><span><i class=\"sw r\"></i>recorded future</span><span class=\"lead-in\">Every colored skeleton is one forecast future:</span><span><i class=\"sw y\"></i>leaves 0.5&nbsp;m within 1&nbsp;s</span><span><i class=\"sw n\"></i>does not</span></span>UF-Retail-HRI: the mobile base passes and the person steps away (leaves 0.5&nbsp;m within 1&nbsp;s). 25 of the 50 futures of DeciMo leave, against 3 of CoMusion and 1 of HumanMAC, and the single future of AINet stays. The base is drawn schematically around its localized position."},
+ {"name": "chico_compare_830", "label": "Three forecasters on a CHICO window", "caption": "<span class=\"fkey\"><span><i class=\"sw h\"></i>last observed</span><span><i class=\"sw r\"></i>recorded future</span><span class=\"lead-in\">Every colored skeleton is one forecast future:</span><span><i class=\"sw y\"></i>enters 0.2&nbsp;m within 1&nbsp;s</span><span><i class=\"sw n\"></i>does not</span></span>CHICO: the industrial arm moves toward the operator, who comes within 0.2&nbsp;m of it after 0.76&nbsp;s. The robot follows its executed motion. 38 of the 50 futures of DeciMo enter 0.2&nbsp;m within 1&nbsp;s, against 14 of CoMusion and 11 of HumanMAC. The arm stands on a table, drawn as a pedestal."}
+]</script>
+      </div>
+    </div>
+
+    <div class="sub">
+      <h3 class="sub-t"><span class="k">5.2</span>The test windows</h3>
+      <div class="prose"><p>Four datasets pair people with a legged robot (HARPER), a mobile base (UF-Retail-HRI), an arm that the person guides by hand (COMFI), and an industrial arm (CHICO). Their test windows differ in how close the person starts, whether the person is approaching, and how fast the robot moves, and with them in how often a person comes within 0.2&nbsp;m in the next second.</p></div>
+      <figure class="media fig w1120">
+        <div class="card">
+          <button type="button" class="zoom frame" aria-label="Enlarge the figure: situations in the test windows of the four datasets">
+            <img src="assets/s_situations_dist.png" width="2240" height="509" loading="lazy" decoding="async"
+                 alt="Test windows of HARPER, UF-Retail-HRI, COMFI, and CHICO: density of the starting distance, cumulative shares by the rate of approach and by the robot speed, and the entry rate against the starting distance.">
+            <span class="zoom-badge" aria-hidden="true"><svg class="ico"><use href="#i-zoom"/></svg><span class="zt">Click to enlarge</span></span>
+          </button>
+          <figcaption>Test windows of the four datasets, from the recorded motion only. (a) Density of the distance <i>d</i><sub>0</sub> between person and robot at the moment of the forecast (shaded: windows that start within 0.2&nbsp;m and ask the exit question). (b, c) Cumulative share of the windows by the rate of change of the distance over the last 0.2&nbsp;s (negative: approaching) and by the speed of the robot. (d) Share of the windows that start outside 0.2&nbsp;m in which the person enters within 1&nbsp;s, against <i>d</i><sub>0</sub>.</figcaption>
+        </div>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================== 6 method -->
+<section class="sec alt" id="method" aria-labelledby="method-h">
+  <div class="wrap">
+    <header class="sec-hd">
+      <div class="sec-hd-l"><p class="sec-n"><span class="n">06</span><span class="sec-n-t">Section</span></p><h2 class="sec-t" id="method-h">Method</h2></div>
+      <p class="sec-lead">DeciMo follows one principle: train the set the robot reads, as the robot reads it.</p>
+    </header>
+
+    <div class="sub">
+      <h3 class="sub-t"><span class="k">6.1</span>DeciMo</h3>
+      <figure class="media fig w1120">
+        <div class="card">
+          <button type="button" class="zoom frame" aria-label="Enlarge the figure: overview of DeciMo">
+            <img src="assets/fig02_method.png" width="2240" height="859" loading="lazy" decoding="async"
+                 alt="Overview of DeciMo: a draft network and a refiner (SFGR) generate each future in one pass, a set head refines the K futures, and decision quantities are read against a query. Below, its three parts: one-pass generation, condition-consistent multi-future learning, and deployed-set training.">
+            <span class="zoom-badge" aria-hidden="true"><svg class="ico"><use href="#i-zoom"/></svg><span class="zt">Click to enlarge</span></span>
+          </button>
+        </div>
+      </figure>
+      <ol class="steps">
+        <li><b>One-pass generation.</b> DeciMo generates each future from its own noise in one network pass: a draft network trained with an average-velocity objective and with trajectory displacement consistency, which anchors its jump in direction and length to the futures recorded for the condition, followed by a refiner that repairs the draft against the history. The set is thus cheap to generate at deployment and inside the training loop.</li>
+        <li><b>Condition-consistent multi-future learning.</b> Each training history learns several futures. Borrowing them by pose alone would divide the robot&rsquo;s effect on every event probability of the training targets by the number of futures per history, an effect called condition dilution. DeciMo therefore borrows futures only from training windows recorded under a compatible condition, including where the robot is and how it moves, so that the set responds to the robot.</li>
+        <li><b>Deployed-set training.</b> Training generates whole sets exactly as at inference and fits them with proper scores on body motion and on entries and exits. On human&ndash;robot data, a set head with at most 0.87M parameters refines the <i>K</i> futures jointly.</li>
+      </ol>
+    </div>
+
+    <div class="sub">
+      <h3 class="sub-t"><span class="k">6.2</span>Calibration and the set head</h3>
+      <div class="prose"><p>On HARPER, the entry probabilities of DeciMo follow the observed frequencies. The set head, which refines the 50 futures jointly, raises the precaution-band skill on 76 of the 90 questions. At the reference question, it lifts the precaution-band skill from <span class="num" data-key="ABL.HARPER.DMF_HR.nohead.PBS.O.win">0.843</span> to <span class="num" data-key="MAIN.HARPER.DMF_HR.PBS.O.win">0.867</span>.</p></div>
+      <figure class="media fig w1120">
+        <div class="card">
+          <button type="button" class="zoom frame" aria-label="Enlarge the figure: reliability and sharpness on HARPER">
+            <img src="assets/web_reliability_harper.png" width="2240" height="840" loading="lazy" decoding="async"
+                 alt="Left: observed frequency of entries against the forecast probability for DeciMo, CoMusion, HumanMAC, SkeletonDiffusion, and AINet on HARPER, close to the diagonal for DeciMo. Right: histogram of the forecast probability of DeciMo for windows with and without an entry.">
+            <span class="zoom-badge" aria-hidden="true"><svg class="ico"><use href="#i-zoom"/></svg><span class="zt">Click to enlarge</span></span>
+          </button>
+          <figcaption>Reliability (left): observed frequency of entries against the forecast probability at the reference question on HARPER, forecasters with the robot history (calibrated forecasts lie on the diagonal, and larger markers stand for more windows). Sharpness (right): the forecast probabilities of DeciMo over the windows in which the person enters and over those without an entry (log scale).</figcaption>
+        </div>
+      </figure>
+      <figure class="media fig w1120">
+        <div class="card">
+          <button type="button" class="zoom frame" aria-label="Enlarge the figure: the set head on HARPER">
+            <img src="assets/s_sethead.png" width="2240" height="746" loading="lazy" decoding="async"
+                 alt="The same generator with and without the set head on HARPER: gain in precaution-band skill on 90 questions, value curves, and reliability at the reference question.">
+            <span class="zoom-badge" aria-hidden="true"><svg class="ico"><use href="#i-zoom"/></svg><span class="zt">Click to enlarge</span></span>
+          </button>
+          <figcaption>The same generator with and without its set head on HARPER: (a) gain in precaution-band skill on each of the 90 questions, (b) relative value and (c) reliability at the reference question.</figcaption>
+        </div>
+      </figure>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ================================================================== footer: abstract (generated from the paper) and BibTeX -->
+<footer class="ftr">
+  <div class="wrap">
+    <div class="ftr-grid">
+      <div id="abstract">
+        <h2>Abstract</h2>
+        <!-- abstract:begin -->
+        <p class="abs-lede">Safety standards make robots that share space with people plan for the worst case.</p>
+        <details class="abs">
+          <summary>Read the full abstract</summary>
+          <p>On HARPER, this calls for a precaution in 94% of the windows with a person outside 0.2 m, but the person comes that close within 1 s in only 15% of the flagged windows. Forecasts could spare such precautions, but forecasters are designed and evaluated for their best sample, whereas a robot reads from the whole set the probability and timing of a person entering or leaving a warning distance. We call a forecaster decision-ready if, within one perception cycle, it delivers a set of futures whose entry and exit distributions are calibrated, sharp, and responsive to the robot. Our protocol, <span class="nb">DAVE-Motion</span> (Delivery, Accuracy, and Value Evaluation of Human Motion Forecasts for Robots in Shared Spaces), scores delivery, accuracy, and decision value at every precaution cost. DeciMo, a Decision-ready Motion forecaster, meets these requirements by design, training the set the robot reads as the robot reads it: it generates each future in one pass, borrows training futures only from compatible robot states, and trains the delivered set with proper scores on entries and exits, so its probabilities are calibrated. Across four robot types, it delivers 50 futures within one frame, with the lowest best-of-<i>K</i> errors and the highest decision value of eleven forecasters. On HARPER, it misses 2.0% of entries at a false alarm rate of at most 10% (others: at least 5.3%), and the robot history lowers its ADE by 11% (others: at most 3%).</p>
+        </details>
+        <!-- abstract:end -->
+      </div>
+      <div id="bibtex">
+        <h2>BibTeX</h2>
+        <div class="bib-wrap">
+          <button class="copy-btn" type="button" id="copy-bib" aria-label="Copy BibTeX"><svg class="ico" aria-hidden="true"><use href="#i-copy"/></svg><span>Copy</span></button>
+<pre class="bibtex" id="bib-text">@article{wang2026decisionready,
+  title   = {Decision-Ready Human Motion Forecasting: Calibrated, Robot-Responsive Futures Within One Perception Cycle},
+  author  = {Wang, Ziyi and Wang, Xinshun and Jiang, Linyi and Lin, Yangting and Li, Xiangtai and Yang, Ming-Hsuan and Liu, Mengyuan},
+  journal = {Under review},
+  year    = {2026}
+}</pre>
+        </div>
+      </div>
+    </div>
+    <div class="ftr-base">
+      <span>Under review. The paper, supplement, and code will be linked here.</span>
+      <a href="#top"><svg class="ico" aria-hidden="true"><use href="#i-up"/></svg>Back to the top</a>
+    </div>
+  </div>
+</footer>
+
+<!-- figures open here instead of navigating to the PNG (site/site.js, section 5) -->
+<dialog class="lightbox" id="lightbox" aria-label="Enlarged figure">
+  <button type="button" class="lb-close" aria-label="Close the enlarged figure">&times;</button>
+  <figure class="lb-fig"><figcaption class="lb-cap" hidden></figcaption></figure>
+</dialog>
+
+<script src="data/vcurve_harper.js"></script>
+<script src="data/ranking_harper.js"></script>
+<script src="data/robot_game_harper.js"></script>
+<script src="data/explorer/index.js"></script>
+<script src="data/guess_harper.js"></script>
+<script src="components/ranking/ranking.js"></script>
+<script src="components/robot_game/robot_game.js"></script>
+<script src="components/explorer/explorer.js"></script>
+<script src="components/guess/guess.js"></script>
+<script src="site/site.js"></script>
+<script id="components-init">
+/* The interactive components. The explorer and the guessing game start when they come near the viewport, so that
+   their data, three.js and their videos load only when needed. */
+(function () {
+  'use strict';
+  var near = (window.DMFSite && window.DMFSite.whenNear) || function (el, fn) { if (el) fn(el); };
+  if (window.DMFRanking) DMFRanking.init(document.getElementById('ranking-reversal'), window.DMF_RANKING);
+  if (window.DMFRobotGame) DMFRobotGame.init(document.getElementById('robot-game'), window.DMF_ROBOT_GAME, {
+    alpha: 0.1, episode: 'xy_act15_30hz',
+    episodes: ['xy_act15_30hz', 't_act15_30hz', 'xu_act15_30hz', 'yf_act15_30hz']
+  });
+  near(document.getElementById('explorer'), function (el) { if (window.DMFExplorer) DMFExplorer.init(el, { dataBase: '' }); }, 2000);
+  near(document.getElementById('guess'), function (el) { if (window.DMFGuess) DMFGuess.init(el, { base: '' }); }, 700);
+})();
+</script>
+</body>
+</html>

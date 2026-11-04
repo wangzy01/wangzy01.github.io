@@ -1,0 +1,98 @@
+/* "Be the robot" (components/robot_game). Look: the --ui-* custom properties of the page (site/theme_B.css
+   sets them); the fallbacks below are a neutral stand-alone look (demo.html). Controls look like
+   controls: a slider with a round thumb (hover and focus states), a sweep button, an episode select with arrows. */
+.rg {
+  --rg-ink: var(--ui-ink, #202124); --rg-text: var(--ui-text, #2f2f2f); --rg-muted: var(--ui-muted, #5f6368); --rg-line: var(--ui-line, #e6e6e6);
+  --rg-ring: var(--ui-focus, #1f6fb2);
+  --rg-caught: #2f2f2f; --rg-missed: #c0392b; --rg-alarm: #d69200; --rg-quiet: #c9cdd2;
+  position: relative; max-width: 960px; margin: 0 auto 1.9rem; color: var(--rg-text);
+  font-family: var(--ui-font, 'Noto Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif);
+  font-size: 14.5px; line-height: 1.5;
+}
+.rg *, .rg *::before, .rg *::after { box-sizing: border-box; }
+.rg svg { display: block; overflow: visible; }
+.rg svg text { font-family: var(--ui-font, 'Noto Sans', sans-serif); font-size: 12px; fill: var(--rg-muted); }
+.rg svg text.ink { fill: var(--rg-text); }
+.rg svg text.strong { fill: var(--rg-ink); font-weight: 700; }
+.rg svg text.num { font-variant-numeric: tabular-nums; }
+.rg svg text.small { font-size: 11px; }
+.rg svg text.band-label { font-size: 11.5px; fill: #3f6f93; }
+.rg-h { margin: 0 0 4px; color: var(--rg-ink); font: 600 17px/1.35 var(--ui-font-display, inherit); letter-spacing: -.005em; }
+.rg-sub { margin: 0 0 10px; color: var(--rg-muted); font-size: 13px; line-height: 1.5; }
+.rg-part + .rg-part { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--rg-line); }
+
+/* buttons and select */
+.rg-btn { display: inline-flex; align-items: center; gap: 8px; height: var(--ui-ctl-h, 32px); padding: 0 14px; border: 1px solid var(--ui-btn-line, #d9d9d9);
+  border-radius: var(--ui-btn-r, 6px); background: var(--ui-btn-bg, #fff); color: var(--ui-btn-ink, #363636); font: 500 13.5px/1 var(--ui-font, inherit);
+  cursor: pointer; white-space: nowrap; box-shadow: var(--ui-btn-shadow, none); transition: background-color .15s, border-color .15s; }
+.rg-btn:hover { border-color: var(--ui-btn-hover-line, #bdc1c6); background: var(--ui-btn-hover-bg, #fafafa); }
+.rg-btn:focus-visible { outline: 2px solid var(--rg-ring); outline-offset: 2px; }
+.rg-btn svg { flex: none; }
+.rg-btn.icon { width: var(--ui-ctl-h, 32px); padding: 0; justify-content: center; }
+.rg-btn[aria-pressed="true"] { border-color: var(--ui-accent, #0072B2); background: var(--ui-accent-soft, #eef6fb); }
+.rg-select { height: var(--ui-ctl-h, 32px); max-width: 100%; min-width: 0; padding: 0 32px 0 12px; border: 1px solid var(--ui-btn-line, #d9d9d9);
+  border-radius: var(--ui-btn-r, 6px); background-color: var(--ui-btn-bg, #fff); color: var(--ui-btn-ink, #363636); font: 500 13.5px/1 var(--ui-font, inherit);
+  cursor: pointer; box-shadow: var(--ui-btn-shadow, none); -webkit-appearance: none; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%235f6368' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center; transition: border-color .15s; }
+.rg-select:hover { border-color: var(--ui-btn-hover-line, #bdc1c6); }
+.rg-select:focus-visible { outline: 2px solid var(--rg-ring); outline-offset: 2px; }
+
+/* cost-ratio readout, sweep button and slider */
+.rg-top { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 8px 16px; margin-bottom: 6px; }
+.rg-read { flex: 1 1 22rem; min-width: 0; line-height: 1.45; }
+.rg-top .rg-btn { flex: none; }
+.rg-read .rg-alpha { margin-right: .55rem; color: var(--rg-ink); font: 500 19px/1.3 var(--ui-font-display, inherit); white-space: nowrap; }
+.rg-read .rg-alpha b { font-weight: 700; }
+.rg-read .rg-note { color: var(--rg-muted); font-size: 13.5px; }
+.rg-slider { position: relative; border-radius: 8px; outline: none; cursor: pointer; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.rg-slider:focus-visible { box-shadow: 0 0 0 2px var(--rg-ring); }
+.rg-slider > svg { width: 100%; height: auto; }
+.rg-slider path.curve { fill: none; stroke-linejoin: round; stroke-linecap: round; }
+/* the thumb (the last circle of the slider): accent ring, larger on hover and focus */
+.rg-slider > svg > circle { fill: #fff; stroke: var(--ui-accent, #2f2f2f); stroke-width: 2.5; transform-box: fill-box; transform-origin: center;
+  transition: transform .15s, stroke-width .15s; filter: drop-shadow(0 1px 1.5px rgba(15, 23, 42, .25)); }
+.rg-slider:hover > svg > circle, .rg-slider:focus-visible > svg > circle { transform: scale(1.18); stroke-width: 3; }
+.rg-keys { display: flex; flex-wrap: wrap; gap: 4px 18px; margin-top: 4px; color: var(--rg-muted); font-size: 13px; }
+.rg-keys span { display: inline-flex; align-items: center; gap: .4rem; }
+
+/* ranked bars */
+.rg-bars > svg { width: 100%; height: auto; }
+.rg-bars .row-hit { fill: transparent; }
+.rg-bars .row-hit:hover { fill: var(--ui-hover, #f6f7f8); }
+.rg-bars svg text, .rg-bars svg path, .rg-bars svg line, .rg-bars svg g { pointer-events: none; }
+
+/* episode strip */
+.rg-strip-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 10px; }
+.rg-strip-head label { margin-right: 2px; color: var(--rg-text); font-size: 13.5px; font-weight: 600; }
+.rg-epnav { display: inline-flex; align-items: center; gap: 6px; flex: 0 1 31rem; min-width: 0; }
+.rg-epnav .rg-select { flex: 1 1 auto; width: 100%; }
+.rg-strip-info { flex: 1 1 14rem; min-width: 0; color: var(--rg-muted); font-size: 13px; }
+.rg-legend { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 0 0 6px; color: var(--rg-text); font-size: 13px; }
+.rg-legend span { display: inline-flex; align-items: center; gap: .4rem; }
+.rg-strip-body { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: start; }
+.rg-strip-scroll { overflow-x: auto; overflow-y: hidden; border-radius: 6px; outline: none; touch-action: pan-x pan-y; scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch; }
+.rg-strip-scroll:focus-visible { box-shadow: 0 0 0 2px var(--rg-ring); }
+.rg-strip-scroll > svg { cursor: crosshair; }
+.rg-strip-foot { margin-top: 8px; color: var(--rg-muted); font-size: 13px; line-height: 1.5; }
+.rg-strip-note { margin: -2px 0 10px; color: var(--rg-muted); font-size: 13px; line-height: 1.5; }
+
+/* tooltip: same look as the V(alpha) chart; a static readout under the strip on narrow screens */
+.rg-tip { position: absolute; top: 0; left: 0; z-index: 3; padding: 10px 12px; border: 1px solid var(--ui-line-2, #d6d6d6); border-radius: 10px;
+  background: rgba(255, 255, 255, .97); box-shadow: var(--ui-shadow-pop, 0 2px 10px rgba(0, 0, 0, .08)); color: var(--rg-text); font-size: 12.5px;
+  line-height: 1.5; white-space: nowrap; pointer-events: none; }
+.rg-tip .hd { margin-bottom: 2px; color: var(--rg-muted); }
+.rg-tip .row { display: flex; align-items: center; gap: .45rem; }
+.rg-tip .row b { min-width: 2.6em; text-align: right; color: var(--rg-ink); font-variant-numeric: tabular-nums; }
+.rg-tip .row .nm { min-width: 6.6em; }
+.rg-tip .row svg { flex: none; }
+.rg-tip .oc { color: var(--rg-ink); }
+.rg-tip.below { position: static; margin-top: 10px; transform: none !important; box-shadow: none; white-space: normal; }
+.rg-tip[hidden] { display: none !important; }
+.rg-sr { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.rg-fail { text-align: center; color: var(--rg-muted); font-size: 14px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rg *, .rg *::before, .rg *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+}

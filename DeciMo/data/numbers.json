@@ -1,0 +1,100 @@
+{
+ "ABL.HARPER.DMF_HR.nohead.PBS.O.win": {
+  "value": 0.842616350999203,
+  "fmt": "0.843",
+  "status": "real",
+  "src": "PKG sources/A_eval/results_v2/HARPER/DMF_HR_reference_final_nohead",
+  "note": null
+ },
+ "MAIN.HARPER.DMF_HR.MissFPR10.O": {
+  "value": 1.9516728624536461,
+  "fmt": "2.0",
+  "status": "real",
+  "src": "PKG results/<ds>/<model>/summary.json.gz (tables/main_*_complete_models)",
+  "note": null
+ },
+ "MAIN.HARPER.DMF_HR.PBS.O.win": {
+  "value": 0.8669842741963965,
+  "fmt": "0.867",
+  "status": "real",
+  "src": "PKG results/<ds>/<model>/summary.json.gz (tables/main_*_complete_models)",
+  "note": null
+ },
+ "MAIN.HARPER.SPARD_H.PBS.O.win": {
+  "value": 0.703134151525636,
+  "fmt": "0.703",
+  "status": "real",
+  "src": "修改工作区_1026/analysis/新增对比方法_数据.json (T1, SPARD_HARPER_H_full_s0)",
+  "note": null
+ },
+ "MAIN.HARPER.SkeletonDiffusion_H.PBS.O.win": {
+  "value": 0.7946243130253536,
+  "fmt": "0.795",
+  "status": "real",
+  "src": "PKG results/HARPER/SkeletonDiffusion_H (= TXT.HARPER.BestOther.PBS.O.win)",
+  "note": null
+ },
+ "RANK.HARPER.H.tauPBS": {
+  "value": 0.5636363636363636,
+  "fmt": "0.56",
+  "status": "real",
+  "src": "修改工作区_1026/analysis/ranking_questions/03_tau.csv (H, 11 forecasters with SPARD and MoFlow)",
+  "note": null
+ },
+ "RANK.HARPER.HR.tauPBS": {
+  "value": 0.45454545454545453,
+  "fmt": "0.45",
+  "status": "real",
+  "src": "修改工作区_1026/analysis/ranking_questions/03_tau.csv (H+R, 11 forecasters with SPARD and MoFlow)",
+  "note": null
+ },
+ "TXT.HARPER.BestOther.MissFPR10.O": {
+  "value": 5.297397769516521,
+  "fmt": "5.3",
+  "status": "real",
+  "src": "best non-DMF (HumanMAC_H)",
+  "note": null
+ },
+ "TXT.HARPER.BestOther.PBS.O.win": {
+  "value": 0.7946243130253536,
+  "fmt": "0.795",
+  "status": "real",
+  "src": "best non-DMF (SkeletonDiffusion_H)",
+  "note": null
+ },
+ "TXT.HARPER.DMF.dADEpct.abs": {
+  "value": 10.59050261170526,
+  "fmt": "11",
+  "status": "real",
+  "src": "H->HR relative improvement of DMF",
+  "note": null
+ },
+ "TXT.HARPER.DMF.dMissPct.abs": {
+  "value": 66.12903225806105,
+  "fmt": "66",
+  "status": "real",
+  "src": "H->HR relative reduction of missed entries, DMF",
+  "note": null
+ },
+ "TXT.HARPER.Others.dADEpct.maxabs": {
+  "value": 2.7224077179755133,
+  "fmt": "3",
+  "status": "real",
+  "src": "largest improvement among others",
+  "note": null
+ },
+ "TXT.HARPER.Others.dMissPct.best": {
+  "value": 33.46613545816871,
+  "fmt": "33",
+  "status": "real",
+  "src": "largest relative reduction of missed entries among the other forecasters (SeS-GCN)",
+  "note": null
+ },
+ "TXT.HARPER.SPARD_H.dADEpct.vsSkeletonDiffusion_H": {
+  "value": 6.158271311197767,
+  "fmt": "6",
+  "status": "real",
+  "src": "ADE of SPARD_H (T1) against SkeletonDiffusion_H (PKG summary.json.gz), relative",
+  "note": null
+ }
+}

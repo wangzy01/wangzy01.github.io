@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Question Explorer</title>
+  <meta name="description" content="Standalone demo of the interactive question explorer of the project page.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="explorer.css">
+
+  <style>
+    /* the page context of index.html (subset of its <style>) */
+    :root { color-scheme: light; --ink: #2f2f2f; --muted: #5f6368; --line: #e6e6e6; --link: #1f6fb2; }
+    html, body { background: #ffffff; }
+    body { color: var(--ink); font-family: 'Noto Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+    .section-title, .subhead { font-family: 'Google Sans', 'Noto Sans', sans-serif; }
+    a { color: var(--link); }
+    .section { padding: 2.4rem 1.5rem; }
+    .section-title { text-align: center; margin-bottom: 1rem !important; }
+    .subhead { font-size: 1.2rem; font-weight: 500; text-align: center; color: #363636; margin: .2rem 0 .9rem; }
+    @media screen and (max-width: 768px) { .section { padding: 1.8rem 16px; } }
+    /* demo only: script errors become visible in screenshots */
+    #demo-errors { position: fixed; left: 0; right: 0; top: 0; z-index: 1000; margin: 0; padding: 0; color: #c00000; background: #ffffff;
+      font: 12px/1.4 monospace; white-space: pre-wrap; }
+    #demo-errors:empty { display: none; }
+    #demo-errors:not(:empty) { padding: 6px 10px; border-bottom: 2px solid #c00000; }
+  </style>
+  <script>
+    (function () {
+      function show(msg) {
+        var box = document.getElementById('demo-errors');
+        if (!box) { document.addEventListener('DOMContentLoaded', function () { show(msg); }); return; }
+        box.textContent += msg + '\n';
+      }
+      window.onerror = function (message, source, line, col) {
+        show('Error: ' + message + ' (' + String(source || '').split('/').pop() + ':' + line + ':' + col + ')');
+      };
+      window.addEventListener('unhandledrejection', function (e) {
+        show('Unhandled rejection: ' + (e.reason && e.reason.message ? e.reason.message : e.reason));
+      });
+    })();
+  </script>
+</head>
+<body>
+<pre id="demo-errors"></pre>
+
+<section class="section" id="explorer-section">
+  <div class="container is-max-desktop">
+    <h3 class="subhead">Every question from one set of futures, interactive</h3>
+    <div id="explorer"></div>
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/lines/LineSegmentsGeometry.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/lines/LineMaterial.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/lines/LineSegments2.js"></script>
+<script src="../../data/explorer/index.js"></script>
+<script src="explorer.js"></script>
+<script>
+  /* Options can be set in the URL hash for checks and screenshots, e.g.
+     demo.html#window=comfi_1825&question=O|out|0.20|40&compare=HumanMAC_HR&time=end&autoplay=0 */
+  (function () {
+    var opts = { dataBase: '../../' };
+    location.hash.replace(/^#/, '').split('&').forEach(function (kv) {
+      if (!kv) return;
+      var i = kv.indexOf('='), k = decodeURIComponent(i < 0 ? kv : kv.slice(0, i)), v = i < 0 ? '' : decodeURIComponent(kv.slice(i + 1));
+      if (k === 'window' || k === 'question' || k === 'compare') opts[k] = v;
+      else if (k === 'time') opts.time = v === 'end' ? 'end' : parseFloat(v);
+      else if (k === 'autoplay') opts.autoplay = v !== '0' && v !== 'false';
+    });
+    window.dmfxDemo = DMFExplorer.init(document.getElementById('explorer'), opts);
+  })();
+</script>
+</body>
+</html>
