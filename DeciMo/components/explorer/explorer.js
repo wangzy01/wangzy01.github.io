@@ -32,6 +32,17 @@
   // (enters / leaves within h) is drawn in the forecaster's colour, one that does not in that colour mixed 45% with white;
   // both stay clearly visible.
   var FUT_MIX = 0.45, OP_YES = 0.95, OP_NO = 0.9;
+  // (2026-11-07, author: the scene style of the paper's Figs. 7, 9 and 10; co-author: the toon robots looked cartoonish)
+  // The robot is drawn as the nodes and links that the forecasters receive: slate-gray links and node dots, no surface;
+  // under the arms of COMFI and CHICO, whose stand or table the data do not have, a thin, lighter line runs from link 0
+  // down to the floor. The person of the history is a mid-gray skeleton as wide as the futures that answer yes, with
+  // joint dots (author 2026-11-07, replacing the decision of 2026-10-28 to keep the 3D body; PERSON = 'body' brings it
+  // back). The UF-Retail-HRI robot, whose only input is its localized floor point, is that node with a thin pole of
+  // UF_POLE m on it, drawn as the mounting lines (author 2026-11-07; robotvis DECIMO_UF_SHAPE=pole,1.1). Widths and dots
+  // in CSS pixels (the paper: robot 1.1 pt and futures 0.7 pt, nodes about 2.2 robot widths, joint dots 2.6 line widths).
+  var PERSON = 'skeldots';                       // 'skeldots' | 'body'
+  var ROBOT_COL = '#475569', ROBOT_W = 2.3, ROBOT_NODE = 5.5, MOUNT_W = 0.55, MOUNT_MIX = 0.5, UF_POLE = 1.1;
+  var HIST_COL = '#737C88', HIST_W = 1.45, HIST_DOT = 2.6;
 
   // ------------------------------------------------------------------------------------------------ small helpers
   function h(tag, cls, parent, text) {
@@ -70,6 +81,13 @@
       var a = { d: STICK, transform: i ? 'translate(' + 9 * i + ' 0)' : null, fill: 'none', stroke: c, 'stroke-linejoin': 'round' };
       for (var k in attrs) if (Object.prototype.hasOwnProperty.call(attrs, k)) a[k] = attrs[k];
       s('path', a, g);
+    });
+    return g;
+  }
+  function histKey() {                         // (2026-11-07) last observed: gray skeleton with joint dots, no head circle
+    var g = stickKey([HIST_COL], { 'stroke-width': 1.6, 'stroke-linecap': 'round' });
+    [[7, 2.9], [7, 5.6], [7, 12], [4, 11.2], [10, 11.2], [4.4, 18], [9.6, 18]].forEach(function (c) {
+      s('circle', { cx: c[0], cy: c[1], r: 1.35, fill: HIST_COL }, g);
     });
     return g;
   }
@@ -363,6 +381,7 @@
     };
     Object.keys(this.mats).forEach(function (k) { self.mats[k].userData.base = self.mats[k].color.clone(); });
     this.floorTex = this.makeFloorTexture();
+    this.dotTex = this.makeDotTexture();
 
     var c = new THREE.OrbitControls(this.camera, canvas);
     c.enableDamping = false;
@@ -402,6 +421,17 @@
     g.fillStyle = gr;
     g.fillRect(0, 0, 256, 256);
     return new THREE.CanvasTexture(cv);
+  };
+
+  Viewer.prototype.makeDotTexture = function () {   // (2026-11-07) round dots for THREE.Points (node and joint dots)
+    var cv = document.createElement('canvas');
+    cv.width = cv.height = 64;
+    var g = cv.getContext('2d');
+    g.fillStyle = '#ffffff';
+    g.beginPath();
+    g.arc(32, 32, 30, 0, 2 * Math.PI);
+    g.fill();
+    return new this.T3.CanvasTexture(cv);
   };
 
   Viewer.prototype.layout = function (mode) {
@@ -473,6 +503,63 @@
     }
     return g;
   }
+
+  /* (2026-11-07) a skeleton of n nodes drawn as in the paper: links as screen-width lines, the nodes used by the links
+     as round dots of dotPx; mount: colour of a line from node 0 straight down to the floor (y = 0) when that node is
+     higher than 5 cm (the arms of COMFI and CHICO), else null; pole: height (m) of a line of that colour from node 0
+     straight up (the UF-Retail-HRI robot: its one node, no links). depthWrite false: the futures, drawn later, stay on
+     top of it (the person of the history); true: it hides what lies behind it (the robot). */
+  function SkelSet(viewer, parent, n, links, color, width, dotPx, order, depthWrite, mount, pole) {
+    var THREE = viewer.T3;
+    this.n = n;
+    this.links = (links || []).filter(function (l) { return l[0] !== l[1]; });
+    this.lines = new LineSet(THREE, parent, Math.max(1, this.links.length), color, width, false, order, depthWrite);
+    this.mount = mount ? new LineSet(THREE, parent, 1, mount, width * MOUNT_W, false, order, depthWrite) : null;
+    this.pole = mount && pole ? pole : 0;
+    var seen = {}, used = [];
+    this.links.forEach(function (l) { l.forEach(function (i) { if (!seen[i]) { seen[i] = 1; used.push(i); } }); });
+    if (this.pole && !seen[0]) used.push(0);
+    this.used = used;
+    this.dpos = new Float32Array(Math.max(1, used.length) * 3);
+    var geo = new THREE.BufferGeometry();
+    this.dattr = new THREE.BufferAttribute(this.dpos, 3);
+    this.dattr.setUsage(THREE.DynamicDrawUsage);
+    geo.setAttribute('position', this.dattr);
+    geo.setDrawRange(0, used.length);
+    this.dmat = new THREE.PointsMaterial({ color: color, size: dotPx, sizeAttenuation: false, map: viewer.dotTex,
+      transparent: true, alphaTest: 0.1, depthWrite: depthWrite });
+    this.dots = new THREE.Points(geo, this.dmat);
+    this.dots.frustumCulled = false;
+    this.dots.renderOrder = order;
+    this.dots.layers.set(2);
+    parent.add(this.dots);
+    this.lineMats = [this.lines.mat].concat(this.mount ? [this.mount.mat] : []);   // their resolution: Viewer.render
+    this.mats = this.lineMats.concat([this.dmat]);
+    this.mats.forEach(function (M) { M.userData.base = M.color.clone(); });
+  }
+  SkelSet.prototype.update = function (P, off) {
+    var L = this.links, arr = this.lines.arr, o = 0, l, i;
+    for (l = 0; l < L.length; l++) {
+      var a = off + L[l][0] * 3, b = off + L[l][1] * 3;
+      arr[o] = P[a]; arr[o + 1] = P[a + 1]; arr[o + 2] = P[a + 2];
+      arr[o + 3] = P[b]; arr[o + 4] = P[b + 1]; arr[o + 5] = P[b + 2];
+      o += 6;
+    }
+    this.lines.commit(L.length);
+    for (i = 0; i < this.used.length; i++) {
+      var k = off + this.used[i] * 3;
+      this.dpos[3 * i] = P[k]; this.dpos[3 * i + 1] = P[k + 1]; this.dpos[3 * i + 2] = P[k + 2];
+    }
+    this.dattr.needsUpdate = true;
+    if (this.mount) {
+      var m = this.mount.arr, x = P[off], y = P[off + 1], z = P[off + 2];
+      m[0] = x; m[1] = y; m[2] = z; m[3] = x; m[4] = this.pole ? y + this.pole : 0; m[5] = z;
+      this.mount.commit(this.pole || y > 0.05 ? 1 : 0);
+    }
+  };
+  SkelSet.prototype.fade = function (t, white) {    // toward white by t (the robot under the virtual-object query)
+    this.mats.forEach(function (M) { M.color.copy(M.userData.base); if (t) M.color.lerp(white, t); });
+  };
 
   function PartSet(viewer, parent, nBase, spec, defMat, occluder) {
     var THREE = viewer.T3, self = this;
@@ -592,7 +679,7 @@
     var sg = this.sphereGeo;
     this.root.traverse(function (o) {
       if (o.geometry && o.geometry !== sg) o.geometry.dispose();
-      if (o.material && o.material.isLineMaterial) o.material.dispose();
+      if (o.material && (o.material.isLineMaterial || o.isPoints)) o.material.dispose();
       if (o.isInstancedMesh && o.dispose) o.dispose();
     });
     this.scene.remove(this.root);
@@ -607,8 +694,16 @@
     var root = new THREE.Group();
     this.scene.add(root);
     this.root = root;
-    this.body = new PartSet(this, root, m.J, bodySpec(m), 'body', false);
-    this.robot = new PartSet(this, root, m.robot.n, robotSpec(m.robot), 'link', true);
+    // (2026-11-07) the person of the history: a gray skeleton with joint dots under the futures (or the 3D body); the
+    // robot: the nodes and links that the forecasters receive, with the mounting line of the arms, and for the
+    // UF-Retail-HRI robot its localized node with a pole of UF_POLE m
+    this.body = PERSON === 'body' ? new PartSet(this, root, m.J, bodySpec(m), 'body', false)
+      : new SkelSet(this, root, m.J, m.links, HIST_COL, HIST_W, HIST_W * HIST_DOT, 0, false, null);
+    var rk = m.robot.kind;
+    this.robot = new SkelSet(this, root, m.robot.n, m.robot.links, ROBOT_COL, ROBOT_W, ROBOT_NODE, -1, true,
+      rk === 'panda' || rk === 'chain' || rk === 'base_point' ? mix(ROBOT_COL, MOUNT_MIX) : null,
+      rk === 'base_point' ? UF_POLE : 0);
+    this.skelMats = [this.body, this.robot].reduce(function (a, o) { return a.concat(o.lineMats || []); }, []);
     this.lines = {};
     var nL = m.links.length;
     m.methods.forEach(function (mm) {
@@ -647,6 +742,7 @@
       M.color.copy(M.userData.base);
       if (fade) M.color.lerp(self.WHITE, 0.62);
     });
+    if (this.robot && this.robot.fade) this.robot.fade(fade ? 0.62 : 0, this.WHITE);
     this.lastS = null;
     this.dirty = true;
   };
@@ -661,10 +757,7 @@
     rc.multiplyScalar(1 / n);
     for (i = 0; i < J; i++) pc.add(v.set(m.hh[ho + i * 3], m.hh[ho + i * 3 + 1], m.hh[ho + i * 3 + 2]));
     pc.multiplyScalar(1 / J);
-    if (m.robot.kind === 'base_point') {         // the schematic base: 0.44 m wide, its head up to 1.10 m
-      bb.expandByPoint(v.set(rc.x - 0.22, 1.1, rc.z - 0.22));
-      bb.expandByPoint(v.set(rc.x + 0.22, 0, rc.z + 0.22));
-    }
+    if (m.robot.kind === 'base_point') bb.expandByPoint(v.set(rc.x, rc.y + UF_POLE, rc.z));   // the top of the pole
     bb.min.y = Math.min(bb.min.y, 0);
     bb.max.y += 0.2;                             // head spheres sit above the top joint on some skeletons
     bb.expandByScalar(0.07);
@@ -800,6 +893,7 @@
       }
       this.rec.obj.visible = this.showRec && this.futVisible;
       this.rec.mat.resolution.set(rc.w, rc.h);
+      for (var j = 0; j < this.skelMats.length; j++) this.skelMats[j].resolution.set(rc.w, rc.h);   // (2026-11-07)
       cam.layers.set(2);
       r.render(sc, cam);
     }
@@ -883,6 +977,11 @@
     var key = ui.key = h('div', 'dmfx-key', root);
     key.setAttribute('role', 'group');
     key.setAttribute('aria-label', 'Legend of the 3D view');
+    if (PERSON === 'skeldots') {                // (2026-11-07) the person of the history, as in the videos
+      var kh = h('span', 'dmfx-ki', key);
+      kh.appendChild(histKey());
+      h('span', null, kh, 'last observed');
+    }
     h('span', 'dmfx-kl', key, 'Every colored skeleton is one forecast future:');
     ui.keyYes = h('span', 'dmfx-ki', key);
     ui.keyNo = h('span', 'dmfx-ki', key);
@@ -1267,7 +1366,7 @@
     var m = this.m, parts = [m.dsname + ', ' + (ROBOT_TXT[m.robot.kind] || 'robot'), 'window ' + m.win, m.fps + ' frames per second'];
     var t = parts.join(' · ') + '.';
     if (m.guiding && m.guiding.length) t += ' The forearms that guide the robot are left out of the distances.';
-    if (m.robot.kind === 'base_point') t += ' The mobile base is drawn schematically around the one floor point that localizes it. Distances are measured to that point.';
+    if (m.robot.kind === 'base_point') t += ' The robot is drawn at its localized position, the only robot input on this dataset. Distances are measured to that point.';
     if (m.note) t += ' ' + cleanNote(m.note).replace(/^./, function (ch) { return ch.toUpperCase(); }) + '.';
     if (m.qs.length < NQ) t += ' The forecasts of this window cover ' + m.qs.length + ' of the ' + NQ + ' questions.';
     this.ui.desc.textContent = t;

@@ -120,7 +120,7 @@
 .theme-b .actions { order: 3; justify-content: center; margin-top: var(--s3); }
 .theme-b .actions-note { display: none; }
 .theme-b .btn { border-radius: 10px; }
-.theme-b .btn-off { border: 1px solid var(--hero-line); background: rgba(255, 255, 255, .55); color: var(--hero-muted); }
+.theme-b .btn-off { border: 1px solid #c5c9ce; background: #eef0f2; color: #565b61; }
 .theme-b .btn-off .soon { padding: 3px 7px; border-radius: 6px; background: #dce5ef; color: var(--hero-text); font: 600 10.5px/1.2 var(--sans);
   letter-spacing: .06em; text-transform: uppercase; }
 .theme-b .btn-solid { border: 1px solid var(--navy); background: var(--navy); color: #fff; box-shadow: var(--sh-1); }

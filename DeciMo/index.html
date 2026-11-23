@@ -82,6 +82,10 @@
           <span><sup>2</sup>University of Electronic Science and Technology of China, Chengdu, China &nbsp;&middot;&nbsp; <sup>3</sup>Nanyang Technological University, Singapore</span>
           <span><sup>4</sup>University of California at Merced, Merced, CA, USA &nbsp;&middot;&nbsp; <sup>&dagger;</sup>Corresponding author</span></p>
       </div>
+      <div class="actions">
+        <span class="btn btn-off" role="link" aria-disabled="true">Paper (arXiv)</span>
+        <a class="btn btn-solid" href="https://github.com/wangzy01/DeciMo">Code on GitHub</a>
+      </div>
     </div>
   </div>
 </section>
@@ -113,15 +117,15 @@
       </div>
       <div class="stat" role="listitem">
         <b class="dmf"><span class="num" data-key="MAIN.HARPER.DMF_HR.MissFPR10.O">2.0</span><span class="unit">%</span></b>
-        <span class="lbl">of the entries missed at a false alarm rate of at most 10%, against at least <span class="num" data-key="TXT.HARPER.BestOther.MissFPR10.O">5.3</span>% for the other forecasters</span>
+        <span class="lbl">of positive entry windows missed at a false alarm rate of at most 10%, against at least <span class="num" data-key="TXT.HARPER.BestOther.MissFPR10.O">5.3</span>% for the other forecasters</span>
       </div>
       <div class="stat" role="listitem">
-        <b class="dmf"><span class="num" data-key="TXT.HARPER.DMF.dMissPct.abs">66</span><span class="unit">%</span></b>
-        <span class="lbl">fewer missed entries when DeciMo also sees the robot history, against at most <span class="num" data-key="TXT.HARPER.Others.dMissPct.best">33</span>% fewer for the other forecasters</span>
+        <b class="dmf"><span class="num">62.5</span><span class="unit">%</span></b>
+        <span class="lbl">fewer missed positive entry windows when DeciMo receives the robot history vs. zeroing it out on the same weights (2.0% vs. 5.2%)</span>
       </div>
       <div class="stat" role="listitem">
         <b>&tau;&nbsp;=&nbsp;<span class="num" data-key="RANK.HARPER.HR.tauPBS">0.45</span></b>
-        <span class="lbl">rank agreement between best-of-<i>K</i> error and decision value over the forecasters with the robot history (<span class="num" data-key="RANK.HARPER.H.tauPBS">0.56</span> without it)</span>
+        <span class="lbl">rank agreement between best-of-<i>K</i> error and decision value across all 11 forecasters with the robot history (<span class="num" data-key="RANK.HARPER.H.tauPBS">0.56</span> without it)</span>
       </div>
     </div>
     <p class="stats-note">All four numbers: HARPER test set, reference question (entry within 0.2&nbsp;m in 1&nbsp;s while the robot holds its pose).</p>
@@ -287,7 +291,7 @@
 
     <div class="sub">
       <h3 class="sub-t"><span class="k">4.1</span>The robot history matters</h3>
-      <div class="prose"><p>People react to the robot, so the futures must change with its motion. On HARPER, the robot history improves the forecasts of DeciMo the most: it lowers the best-of-<i>K</i> ADE of DeciMo by <span class="num" data-key="TXT.HARPER.DMF.dADEpct.abs">11</span>% and the share of entries it misses by <span class="num" data-key="TXT.HARPER.DMF.dMissPct.abs">66</span>%, against at most <span class="num" data-key="TXT.HARPER.Others.dADEpct.maxabs">3</span>% and <span class="num" data-key="TXT.HARPER.Others.dMissPct.best">33</span>% for the other forecasters.</p></div>
+      <div class="prose"><p>People react to the robot, so the futures must change with its motion. On HARPER, moving from the strictly robot-free setup (H) to the full robot-conditioned DeciMo (H+R) lowers best-of-<i>K</i> ADE by <span class="num" data-key="TXT.HARPER.DMF.dADEpct.abs">11</span>% and cuts missed positive entry windows by <span class="num" data-key="TXT.HARPER.DMF.dMissPct.abs">66</span>% (from 5.8% to 2.0%), and DeciMo is the only forecaster across all four datasets that improves consistently in ADE, FDE, body ES, PBS, and missed positive windows under H+R. Controlled ablations isolating the robot history input confirm the same gain: zeroing out the robot history on the identical deployed weights lowers PBS from 0.867 to 0.810 and raises missed positive windows to 5.2% (a 62.5% reduction when the robot history is provided), while training from scratch across three seeds under identical robot-derived supervision improves PBS from 0.812 to 0.851 and cuts missed positive windows by 45%.</p></div>
       <div class="vtabs" id="vt-robot">
         <div class="tabbar">
           <span class="tabbar-l" id="vt-robot-l">Dataset</span>
@@ -406,8 +410,8 @@
         <script type="application/json" class="vtabs-data">[
  {"name": "harper_compare_840", "label": "Four forecasters on a HARPER window", "caption": "<span class=\"fkey\"><span><i class=\"sw h\"></i>last observed</span><span><i class=\"sw r\"></i>recorded future</span><span class=\"lead-in\">Every colored skeleton is one forecast future:</span><span><i class=\"sw y\"></i>enters 0.2&nbsp;m within 1&nbsp;s</span><span><i class=\"sw n\"></i>does not</span></span>HARPER: the person bends over the quadruped and touches it. 38 of the 50 futures of DeciMo enter 0.2&nbsp;m within 1&nbsp;s, against 4 of CoMusion and 6 of HumanMAC, and the single future of AINet does not."},
  {"name": "comfi_compare_2532", "label": "Four forecasters on a COMFI window", "caption": "<span class=\"fkey\"><span><i class=\"sw h\"></i>last observed</span><span><i class=\"sw r\"></i>recorded future</span><span class=\"lead-in\">Every colored skeleton is one forecast future:</span><span><i class=\"sw y\"></i>leaves 0.3&nbsp;m within 1&nbsp;s</span><span><i class=\"sw n\"></i>does not</span></span>COMFI: the person lets go of the arm and steps back. The question is whether the person leaves 0.3&nbsp;m within 1&nbsp;s. 48 of the 50 futures of DeciMo leave, against 17 of CoMusion and 29 of HumanMAC, and the single future of AINet stays."},
- {"name": "uf_compare_1271", "label": "Four forecasters on a UF-Retail-HRI window", "caption": "<span class=\"fkey\"><span><i class=\"sw h\"></i>last observed</span><span><i class=\"sw r\"></i>recorded future</span><span class=\"lead-in\">Every colored skeleton is one forecast future:</span><span><i class=\"sw y\"></i>leaves 0.5&nbsp;m within 1&nbsp;s</span><span><i class=\"sw n\"></i>does not</span></span>UF-Retail-HRI: the mobile base passes and the person steps away (leaves 0.5&nbsp;m within 1&nbsp;s). 25 of the 50 futures of DeciMo leave, against 3 of CoMusion and 1 of HumanMAC, and the single future of AINet stays. The base is drawn schematically around its localized position."},
- {"name": "chico_compare_830", "label": "Three forecasters on a CHICO window", "caption": "<span class=\"fkey\"><span><i class=\"sw h\"></i>last observed</span><span><i class=\"sw r\"></i>recorded future</span><span class=\"lead-in\">Every colored skeleton is one forecast future:</span><span><i class=\"sw y\"></i>enters 0.2&nbsp;m within 1&nbsp;s</span><span><i class=\"sw n\"></i>does not</span></span>CHICO: the industrial arm moves toward the operator, who comes within 0.2&nbsp;m of it after 0.76&nbsp;s. The robot follows its executed motion. 38 of the 50 futures of DeciMo enter 0.2&nbsp;m within 1&nbsp;s, against 14 of CoMusion and 11 of HumanMAC. The arm stands on a table, drawn as a pedestal."}
+ {"name": "uf_compare_1271", "label": "Four forecasters on a UF-Retail-HRI window", "caption": "<span class=\"fkey\"><span><i class=\"sw h\"></i>last observed</span><span><i class=\"sw r\"></i>recorded future</span><span class=\"lead-in\">Every colored skeleton is one forecast future:</span><span><i class=\"sw y\"></i>leaves 0.5&nbsp;m within 1&nbsp;s</span><span><i class=\"sw n\"></i>does not</span></span>UF-Retail-HRI: the mobile base passes and the person steps away (leaves 0.5&nbsp;m within 1&nbsp;s). 25 of the 50 futures of DeciMo leave, against 3 of CoMusion and 1 of HumanMAC, and the single future of AINet stays. The robot is drawn at its localized position, the only robot input on this dataset."},
+ {"name": "chico_compare_830", "label": "Three forecasters on a CHICO window", "caption": "<span class=\"fkey\"><span><i class=\"sw h\"></i>last observed</span><span><i class=\"sw r\"></i>recorded future</span><span class=\"lead-in\">Every colored skeleton is one forecast future:</span><span><i class=\"sw y\"></i>enters 0.2&nbsp;m within 1&nbsp;s</span><span><i class=\"sw n\"></i>does not</span></span>CHICO: the industrial arm moves toward the operator, who comes within 0.2&nbsp;m of it after 0.76&nbsp;s. The robot follows its executed motion. 38 of the 50 futures of DeciMo enter 0.2&nbsp;m within 1&nbsp;s, against 14 of CoMusion and 11 of HumanMAC. The robot is drawn as the nodes and links that the forecasters receive."}
 ]</script>
       </div>
     </div>
@@ -490,10 +494,10 @@
       <div id="abstract">
         <h2>Abstract</h2>
         <!-- abstract:begin -->
-        <p class="abs-lede">Safety standards make robots that share space with people plan for the worst case.</p>
+        <p class="abs-lede">Safety standards make robots sharing space with people plan for the worst case.</p>
         <details class="abs">
           <summary>Read the full abstract</summary>
-          <p>On HARPER, this calls for a precaution in 94% of the windows with a person outside 0.2 m, but the person comes that close within 1 s in only 15% of the flagged windows. Forecasts could spare such precautions, but forecasters are designed and evaluated for their best sample, whereas a robot reads from the whole set the probability and timing of a person entering or leaving a warning distance. We call a forecaster decision-ready if, within one perception cycle, it delivers a set of futures whose entry and exit distributions are calibrated, sharp, and responsive to the robot. Our protocol, <span class="nb">DAVE-Motion</span> (Delivery, Accuracy, and Value Evaluation of Human Motion Forecasts for Robots in Shared Spaces), scores delivery, accuracy, and decision value at every precaution cost. DeciMo, a Decision-ready Motion forecaster, meets these requirements by design, training the set the robot reads as the robot reads it: it generates each future in one pass, borrows training futures only from compatible robot states, and trains the delivered set with proper scores on entries and exits, so its probabilities are calibrated. Across four robot types, it delivers 50 futures within one frame, with the lowest best-of-<i>K</i> errors and the highest decision value of eleven forecasters. On HARPER, it misses 2.0% of entries at a false alarm rate of at most 10% (others: at least 5.3%), and the robot history lowers its ADE by 11% (others: at most 3%).</p>
+          <p>On HARPER, this calls for a precaution in 94% of the windows with a person outside 0.2&nbsp;m, but the person comes that close within 1&nbsp;s in only 15% of the flagged windows. Forecasts could spare them, but forecasters are designed and evaluated for their best sample, whereas a robot reads from the whole set the probability and timing of a person entering or leaving a warning distance. We call a forecaster decision-ready if, within one perception cycle, it delivers a set of futures whose entry and exit distributions are calibrated, sharp, and responsive to the robot. Our protocol, <span class="nb">DAVE-Motion</span>, scores delivery, accuracy, and decision value at every precaution cost. DeciMo, a Decision-ready Motion forecaster, targets these requirements directly by training the set the robot reads as the robot reads it: it generates each future in one pass, borrows training futures only from compatible robot states, and trains the delivered set with proper scoring rules on entries and exits to promote calibrated, sharp event probabilities. Across four robot platforms, it delivers 50 futures within one frame, with the lowest best-of-<i>K</i> ADE and the highest decision value on the reference question among eleven forecasters. On HARPER, it misses 2.0% of the positive entry windows at a false alarm rate of at most 10% (others: at least 5.3%), and with its weights fixed, removing the robot history lowers its decision value from 0.867 to 0.810.</p>
         </details>
         <!-- abstract:end -->
       </div>
@@ -511,7 +515,7 @@
       </div>
     </div>
     <div class="ftr-base">
-      <span>Under review. The paper, supplement, and code will be linked here.</span>
+      <span>Under review.</span>
       <a href="#top"><svg class="ico" aria-hidden="true"><use href="#i-up"/></svg>Back to the top</a>
     </div>
   </div>
